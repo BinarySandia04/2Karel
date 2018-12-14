@@ -1,2 +1,2 @@
 # 2Karel
-An Unity project for Codelearn. Now I work there. They don't actually pay me ._.
+An Unity project for Codelearn. Now I work fort them. They don't actually pay me ._.
