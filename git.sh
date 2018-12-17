@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-echo "SandiGit > Pulled"
 git add *
 echo "SandiGit > Added"
 git commit -m $0
