@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-git pull
 echo "SandiGit > Pulled"
 git add *
 echo "SandiGit > Added"
