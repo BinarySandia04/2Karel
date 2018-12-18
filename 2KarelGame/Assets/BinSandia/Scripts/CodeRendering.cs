@@ -2,36 +2,36 @@
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CodeRendering : MonoBehaviour
 {
 
-    public TMP_InputField input;
-    private string nums = "1234567890";
-    private string[] colorWords = new string[] {"function", "pickBeeper", "putBeeperInTray",
-            "move", "repeat", "turnLeft", "turnRight", "while",
-            "if", "else", "frontIsBlocked", "frontIsClear",
-            "rightIsBlocked", "rightIsClear",
-            "leftIsBlocked", "leftIsClear", "trayNotFull", "noExitPresent", "beepersInBag" };
+    // Structs
 
-    bool isNumbers()
+    [Serializable]
+    public struct ColoredWord
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0) ||
-            Input.GetKeyDown(KeyCode.Alpha2) ||
-            Input.GetKeyDown(KeyCode.Alpha3) ||
-            Input.GetKeyDown(KeyCode.Alpha4) ||
-            Input.GetKeyDown(KeyCode.Alpha5) ||
-            Input.GetKeyDown(KeyCode.Alpha6) ||
-            Input.GetKeyDown(KeyCode.Alpha7) ||
-            Input.GetKeyDown(KeyCode.Alpha8) ||
-            Input.GetKeyDown(KeyCode.Alpha9) ||
-            Input.GetKeyDown(KeyCode.Alpha0)
-            )
-        {
-            return true;
-        }
-        return false;
+        public string word;
+        public Color color;
     }
+
+    // Public variables
+
+    public List<ColoredWord> colorDictionary;
+    private TMP_InputField input;
+    private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, pure word location start, second one, end
+
+    // Useful functions
+
+    string colorToHex(Color color)
+    {
+        return ColorUtility.ToHtmlStringRGB(color);
+    }
+
+    // Void Start and Update
+
+    void Start() { }
 
     void Update()
     {
@@ -42,62 +42,26 @@ public class CodeRendering : MonoBehaviour
             {
                 TryRemoveColor();
             }
-            if (isNumbers())
-            {
-                RenderNumberColor();
-            }
         }
     }
+
     public void RenderNumberColor()
     {
         // WIP
-    }
-
-    private void SearchForAndAddNumber(string value, string before, string after)
-    {
-        string actualText = input.text;
-        MatchCollection match = Regex.Matches(actualText, value); // numero de values en la string
-        Match m;
-        try
-        {
-            m = match[match.Count - 1];
-        }
-        catch (Exception ex)
-        {
-            return; // Numero no implementado
-        }
-        if (m.Index != input.stringPosition - 1) return;
-        string colored = actualText.Insert(m.Index, '<' + before + '>').Insert(m.Index + before.Length + 2 + value.Length, "<" + after + ">");
-        input.text = colored;
-        input.stringPosition += before.Length + 2;
-
-    }
+    } // Ojala?
 
     public void RenderTextColors()
     {
         input = GetComponent<TMP_InputField>();
-        SearchForAndAdd("function", "color=#F4A442", "/color");
-        SearchForAndAdd("pickBeeper", "color=#6B0FFF", "/color");
-        SearchForAndAdd("putBeeperInTray", "color=#6B0FFF", "/color");
-        SearchForAndAdd("move", "color=#6B0FFF", "/color");
-        SearchForAndAdd("repeat", "color=#F4A442", "/color");
-        SearchForAndAdd("turnLeft", "color=#33FF33", "/color");
-        SearchForAndAdd("turnRight", "color=#33FF33", "/color");
-        SearchForAndAdd("while", "color=#F4A442", "/color");
-        SearchForAndAdd("if", "color=#F4A442", "/color");
-        SearchForAndAdd("else", "color=#F4A442", "/color");
-        SearchForAndAdd("frontIsBlocked", "color=#0F4FDB", "/color");
-        SearchForAndAdd("frontIsClear", "color=#0F4FDB", "/color");
-        SearchForAndAdd("rightIsBlocked", "color=#0F4FDB", "/color");
-        SearchForAndAdd("rightIsClear", "color=#0F4FDB", "/color");
-        SearchForAndAdd("leftIsBlocked", "color=#0F4FDB", "/color");
-        SearchForAndAdd("leftIsClear", "color=#0F4FDB", "/color");
-        SearchForAndAdd("trayNotFull", "color=#0F4FDB", "/color");
-        SearchForAndAdd("noExitPresent", "color=#0F4FDB", "/color");
-        SearchForAndAdd("beepersInBag", "color=#0F4FDB", "/color");
-
+        string a = "color=#" +
+            "", b = "/color";
+        foreach(ColoredWord cw in colorDictionary)
+        {
+            // SearchforandAdd
+            TryAddNewColors(cw.word, a + colorToHex(cw.color), b);
+        }
         ReajustCaret();
-    }
+    } // Implementar a inspector DONE
 
     private void TryRemoveColor()
     {
@@ -117,10 +81,10 @@ public class CodeRendering : MonoBehaviour
                 input.text = input.text.Substring(0, input.stringPosition - 14) + input.text.Substring(input.stringPosition, input.text.Length - input.stringPosition);
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
-    }
+    } // Done
 
     private void ReajustCaret()
     {
@@ -147,7 +111,6 @@ public class CodeRendering : MonoBehaviour
                 if (input.text[input.stringPosition + 1] == '/')
                 {
                     newCaretPos += 8;
-                    Debug.Log("A");
                 }
                 else
                 {
@@ -157,144 +120,69 @@ public class CodeRendering : MonoBehaviour
                 return;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
 
-    }
+    } // Done
 
-    private void SearchForAndAdd(string value, string before, string after)
+    private void TryAddNewColors(string value, string before, string after)
     {
         string colored;
-        bool changed = false;
-        string actualText = input.text;
-        MatchCollection match = Regex.Matches(actualText, value); // numero de values en la string
+        MatchCollection match = Regex.Matches(input.text, value); // numero de values en la string
         foreach (Match m in match)
         {
-            // m.Index dice donde se encuentra el string encontrado.
-            // Aqui hace un loop por todos
-            if (nums.Contains(value))
-            {
-                // Ok estamos tratando de colorear un número!
-                // TODO comprobar si en 1,2,3,4,5 o 6 posiciones atras hay un '#'
-                try
-                {
-
-                    if (!(actualText[m.Index + 1] != '>' && actualText[m.Index + 2] != '>' &&
-                    actualText[m.Index + 3] != '>' && actualText[m.Index + 4] != '>' &&
-                    actualText[m.Index + 5] != '>' && actualText[m.Index + 6] != '>'))
-                    {
-                        // Esta fuera de un color!
-                        try
-                        {
-                            if (actualText[m.Index - 1] == '>')
-                            {
-                                // Osea, si hay en este caso detras "<color=#noseqe> y delante </color>, esto se triggerea
-                            }
-                            else
-                            {
-                                colored = actualText.Insert(m.Index, '<' + before + '>').Insert(m.Index + before.Length + 2 + value.Length, "<" + after + ">");
-
-                                input.text = colored;
-                                input.stringPosition += before.Length + 2;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                    }
-                    else
-                    {
-                    }
-                }
-                catch (Exception ex)
-                {
-                }
-
-            }
             try
             {
-                if (actualText[m.Index - 1] == '>')
+                if (input.text[m.Index - 1] == '>')
                 {
                     // Osea, si hay en este caso detras "<color=#noseqe> y delante </color>, esto se triggerea
                 }
                 else
                 {
-                    colored = actualText.Insert(m.Index, '<' + before + '>').Insert(m.Index + before.Length + 2 + value.Length, "<" + after + ">");
+                    colored = input.text.Insert(m.Index, '<' + before + '>').Insert(m.Index + before.Length + 2 + value.Length, "<" + after + ">");
+                    // This colors a word!
+
+                    // Ara la palabra esta en m.Index + 13
+                    // El final de la palabra esta en m.Index + 13 + value.Length
+                    List<int> _add = new List<int>();
+                    _add.Add(m.Index + 13);
+                    _add.Add(m.Index + 13 + value.Length);
+                    Debug.Log(m.Index + 13);
+                    coloredWordsInfo.Add(_add);
+                    foreach (List<int> l in coloredWordsInfo)
+                    {
+                        Debug.Log("First index: " + l[0]);
+                        Debug.Log("Last word: " + l[1]);
+                    }
 
                     input.text = colored;
                     input.stringPosition += before.Length + 2;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                colored = actualText.Insert(m.Index, '<' + before + '>').Insert(m.Index + before.Length + 2 + value.Length, "<" + after + ">");
+                colored = input.text.Insert(m.Index, '<' + before + '>').Insert(m.Index + before.Length + 2 + value.Length, "<" + after + ">");
+
+                // Ara la palabra esta en m.Index + 13
+                // El final de la palabra esta en m.Index + 13 + value.Length
+                List<int> _add = new List<int>();
+                _add.Add(m.Index + 13);
+                _add.Add(m.Index + 13 + value.Length);
+                coloredWordsInfo.Add(_add);
 
                 input.text = colored;
                 input.stringPosition += before.Length + 2;
             }
         }
-        // Encontrar colores que ya no pueden existir [BUG #2]
-        match = Regex.Matches(actualText, before);
-        foreach (Match m in match)
-        {
-            bool noHas = true;
-            string whatIsIt = "NULL";
-            for (int i = 0; i < colorWords.Length; i++)
-            {
-                try
-                {
-                    Debug.Log("Comparando " + input.text.Substring(m.Index + before.Length + 1, colorWords[i].Length) + " con " + colorWords[i]);
-                    if (input.text.Substring(m.Index + before.Length + 1, colorWords[i].Length) == colorWords[i])
-                    {
-                        noHas = false;
-                        whatIsIt = colorWords[i];
-                        break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    input.text += " ";
-                }
-
-            }
-            if (noHas) // El substring deberia devolver, si es <color=#FFFFF>tes</color>, deveria devolver tes<, i si eso no es igual a test...
-            {// TODO
-                int lengthError = 0;
-                try
-                {
-                    // Falta arreglar esto, y de bugs vamos done! :D
-                    for (int i = 0; input.text[i + m.Index + before.Length] != '<'; i++)
-                    {
-                        lengthError++;
-                    }
-                    Debug.Log("LengthError: " + lengthError);
-                    Debug.Log("No es lo mismo " + input.text.Substring(m.Index + before.Length + 1, lengthError) + " que ningun noseque");
-                    input.text = input.text.Substring(0, m.Index) + input.text.Substring(m.Index + lengthError, input.text.Length - (m.Index + before.Length - 3));
-                    input.stringPosition -= 6;
-                }
-                catch (Exception ex)
-                {
-                    // Añadir substring del principio?
-                    int i = input.text.Length - 1;
-                    while (input.text[i] != '>')
-                    {
-                        i--;
-                    }
-                    input.text = input.text.Substring(i + 1, input.text.Length - i - 1);
-                    i = input.text.Length - 1;
-                    while (input.text[i] == ' ')
-                    {
-                        i--;
-                    }
-                    input.text = input.text.Substring(0, i + 1);
-                }
-
-            }
-        }
-    }
+    }  // TODO Much work, rompe esto en fracciones
 }
 
-// TODO:
-
-    // Cuando hagas funcionar este desastre, optimizalo un poco. Hay muchos bucles. Ya sabes lo que quiero decir!
+/* // TODO: Hacer lo siguiente:
+ *
+ * - Detectar si lo que se esta editando esta dentro del string, i no en el final
+ *   - Al ser así, al editar algo con color, borrar esta entrada del array de ints coloredWordsInfo
+ *   - Actualizar todas las demas entradas a partir de esta editada con sus nuevas posiciones
+ *   - Se evitara el lag, y todos seremos felices :D!
+ * // Cuando hagas funcionar este desastre, optimizalo un poco. Hay muchos bucles. Ya sabes lo que quiero decir!
+*/
