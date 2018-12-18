@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a68346d55ffe5442bd0e9e3f8e1477d, type: 3}
   m_Name: KarelWordList
   m_EditorClassIdentifier: 
-  word: 
-  color: {r: 0, g: 0, b: 0, a: 0}
+  wordList:
+  - word: function
+    color: {r: 1, g: 0.4847232, b: 0, a: 0}
+  - word: if
+    color: {r: 1, g: 0.48627454, b: 0, a: 0}
+  - word: else
+    color: {r: 1, g: 0.48627454, b: 0, a: 0}
+  - word: while
+    color: {r: 1, g: 0.48627454, b: 0, a: 0}
+  - word: repeat
+    color: {r: 1, g: 0.48627454, b: 0, a: 0}
