@@ -3,7 +3,9 @@
 ## Description
 
 2Karel is a console and gaming computer with next-gen graphics! The game won't be in consoles. Sorry, that was a really sad joke. 2Karel is based on the unknown programming
-game called Karel.  Now in our local time, this game is typically known in the fun.codelearn.cat website, a programming school. The two first languages that you learn in
+game called Karel.
+
+Now in our local time, this game is typically known in the fun.codelearn.cat website, a programming school. The two first languages that you learn in
 Codelearn aren't actual programming languages! The second one is a very limited version of JavaScript (adapted for kids. Remember, JavaScript is not for kids). In this
 limited version, they learn conditionals and all of that stuff.
 
