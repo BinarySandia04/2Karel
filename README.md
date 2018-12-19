@@ -31,4 +31,4 @@ I will be very happy! :D. Dreaming is free btw.
 - [ ] Add campaing mode
 - [ ] Add tutorial
 - [ ] Add multiplayer
-- [ ] Add some special stuf
+- [ ] Add some special stuff
