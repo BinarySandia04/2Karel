@@ -20,6 +20,7 @@ This game needs to be finished before **March 2019**, I think that is because in
 - [x] Solve major code editor bugs to make it stable
 - [ ] Add character spacing
 - [ ] Solve selection bug in code editor
+- [ ] Make a better README.md with more images and things
 ### Long term
 - [x] Add text editor
 - [ ] Add map creator
