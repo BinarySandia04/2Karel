@@ -8,10 +8,10 @@ using System.Linq;
 public class CodeRendering : MonoBehaviour
 {
     // Public variables
-
+    public int debug;
     public KarelWordList WordList;
     private TMP_InputField input;
-    private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
+    private List<List<int>> coloredWordsInfo = new List<List<int>>(1000); // First int, PURE WORD location start, second one, end
 
     // Useful functions
 
@@ -28,12 +28,11 @@ public class CodeRendering : MonoBehaviour
 
     void refreshColorInfo(int offset)
     {
-        if (offset < 0)
-        {
+       
             // Vaciar
             coloredWordsInfo = new List<List<int>>();
-            return;
-        }
+            offset = 0;
+        
         int colors = 0;
         for (int i = offset; i < input.text.Length - 1; i++)
         {
@@ -52,15 +51,10 @@ public class CodeRendering : MonoBehaviour
                     }
                 }
                 add.Add(i + s);
-                coloredWordsInfo[colors] = add;
+                coloredWordsInfo.Add(add);
                 colors++;
                 i += s + 7;
             }
-        }
-        // Vaciar sobrantes (optimisation)
-        for(int i = colors; i + 1 <= coloredWordsInfo.Count; /*Nothing*/)
-        {
-            coloredWordsInfo.RemoveAt(i);
         }
     }
 
@@ -97,6 +91,55 @@ public class CodeRendering : MonoBehaviour
         return coloredWordsInfo.ElementAt(where).ElementAt(1);
     }
 
+    bool canHaveColor(string what)
+    {
+        foreach(KarelWordList.Sentence sen in WordList.wordList)
+        {
+            if (sen.word == what) return true;
+        }
+        return false;
+    }
+
+    void removeInnecessaryColors(int offset)
+    {
+        string whatWord = "";
+        int start = -1, end = -1;
+        bool success = false;
+        int i;
+        for (i = offset; i < input.text.Length - 1; i++)
+        {
+            if (input.text[i] == '>' && input.text[i - 6] != '/')
+            {
+                int until = 0;
+                while((until + i) < input.text.Length && input.text[until + i] != '<' && until < 1000)
+                {
+                    until++;
+                }
+                start = i;
+                end = until;
+                whatWord = input.text.Substring(start + 1, end - 1);
+                if (!canHaveColor(whatWord))
+                {
+                    success = true;
+                    break;
+                }
+            }
+        }
+
+        if (success)
+        {
+            string firstSub, secondSub, thirdSub;
+            firstSub = input.text.Substring(0, start - "<color=#ffffff".Length); // ERROR
+            secondSub = input.text.Substring(start + 1, end - 1);
+            thirdSub = input.text.Substring(start + end + 8, input.text.Length - (start + end + 8));
+            int wherewasbefore = input.stringPosition;
+            input.text = firstSub + secondSub + thirdSub;
+            input.stringPosition = wherewasbefore - 15;
+        }
+
+        refreshColorInfo(-1);
+    }
+
     // Void Start and Update
 
     void Start() {
@@ -108,6 +151,7 @@ public class CodeRendering : MonoBehaviour
         if (Input.anyKey)
         {
             ReajustCaret();
+            DoSpacing(); // Ajustar espaciado para codigo bueno bonito barato
             if (input.stringPosition == input.text.Length)
             {
                 if (Input.GetKey(KeyCode.Backspace)) TryRenderFromEnd();
@@ -115,19 +159,36 @@ public class CodeRendering : MonoBehaviour
             } else
             {
                 // Now you don't inside or outside?
+                //RenderTextColorsOnWrite(); // Aaaah pon aqui la function para actualizar colores.
+                if(Input.anyKeyDown) removeInnecessaryColors(0);
                 if (Input.GetKey(KeyCode.Backspace))
                 {
-                    if (WhereIsCaret(0) == -1)
-                    {
-                        TryRemoveColorOutside();
-                    }
-                    else
+                    if (WhereIsCaret(0) != -1) // La verdad es que solo nos interesa quitar si estamos dentro lool xd
                     {
                         TryRemoveColorsInside();
+                    } else
+                    {
+                        TryRemoveColorsOutside(); // Estamos fuera del color, pero ns
                     }
+                } else
+                {
+                    RenderTextColorsOnWrite();
                 }
             }
         }
+    }
+
+    void DoSpacing()
+    {
+        try
+        {
+            if (input.text[input.stringPosition - 1] == '\n')
+            {
+                Debug.Log("Salto linea!");
+            }
+        }
+        catch (Exception) { }
+        
     }
 
     public void RenderTextColorsOnWrite()
@@ -144,7 +205,7 @@ public class CodeRendering : MonoBehaviour
 
     private void TryRenderFromEnd()
     {
-        if (input.text.Length < 12) return;
+        if (input.stringPosition - 7 < 0) return;
         if (input.text.Substring(input.stringPosition - 7, 7) == "</color")
         {
             // Vale son tres ...<color=#dddddd>...</color>...
@@ -170,23 +231,47 @@ public class CodeRendering : MonoBehaviour
         }
     }
 
-    private void TryRemoveColorOutside()
-    {
-
-        try
-        {
-            // Implementa funcion de limpiar <color> sobrantes y ya esta!
-            
-            // RIP antiguo sistema. 15/12/2018 - 18/12/2018
-        }
-        catch (Exception)
-        {
-        }
-    } // Not yet
-
     private void TryRemoveColorsInside()
     {
+        // Nooot yet
+        int whereImAt = WhereIsCaret(0); // Esto no puede ser -1, he hecho un if antes!
+        // Encima estamos dentro porque si borras x fuera no puedes basicamente, se ejecutaria la otro lol xd
+        removeInnecessaryColors(0);
+    }
 
+    private void TryRemoveColorsOutside()
+    {
+        // Hacer casi el mismo procedimiento de que si estamos editando lol xd
+        if (input.stringPosition - 7 < 0) return;
+            if (input.text.Substring(input.stringPosition - 7, 7) == "</color")
+            {
+                // Vale son tres ...<color=#dddddd>...</color>...
+                // Necessitamos saber el principio de la PURE word
+                int where = WhereIsCaret(-9);
+                string firstSub, secondSub, thirdSub; // Ahora hacen falta TRES. Estamos en el medio!
+
+                if ((FirstPureWord(where) - "<color=#ddddd> ".Length) < 0)
+                {
+                // Bug aqui al editar en medio lol
+                    firstSub = "";
+                    secondSub = input.text.Substring(FirstPureWord(where) + 2, LastPureWord(where) - (FirstPureWord(where) + 1)); // Facil, lo del medio -1 pq estamos en el final y queremos borrar xd
+                    thirdSub = input.text.Substring(LastPureWord(where) + "</color".Length, input.text.Length - (LastPureWord(where) + "</color".Length)); // ddd>... no hace falta
+                }
+                else
+                {
+                    firstSub = input.text.Substring(0, FirstPureWord(where) - "<color=#ddddd> ".Length);  // ...<col
+                    secondSub = input.text.Substring(FirstPureWord(where), LastPureWord(where) - (FirstPureWord(where) + 1)); // Facil, lo del medio -1 pq estamos en el final y queremos borrar xd
+                    thirdSub = input.text.Substring(LastPureWord(where) + "</color".Length, input.text.Length - (LastPureWord(where) + "</color".Length)); // ddd>... no hace falta
+                }
+
+                input.text = firstSub + secondSub + thirdSub;
+                input.stringPosition -= 23;
+
+                if ((FirstPureWord(where) - "<color=#ddddd> ".Length) < 0) refreshColorInfo(-1); // Lo mismo diria
+                else refreshColorInfo(where);
+            }
+        
+        
     }
 
     private void ReajustCaret()
@@ -231,14 +316,14 @@ public class CodeRendering : MonoBehaviour
         {
         }
 
-    } // Done
+    } // Not done
 
     private void ReajustSelectionCaret()
     {
         // Cosas con las que input.text.onSelect() o noseque
 
         // Al final haz la funcion de actualizar si sobran <color> y eso. Misma funcion que on edit
-    }
+    } // Not done
 
     private void TryAddNewColors(string value, string before, string after)
     {
@@ -286,11 +371,4 @@ public class CodeRendering : MonoBehaviour
     }  // TODO Much work, rompe esto en fracciones
 }
 
-/* // TODO: Hacer lo siguiente:
- *
- * - Detectar si lo que se esta editando esta dentro del string, i no en el final
- *   - Al ser así, al editar algo con color, borrar esta entrada del array de ints coloredWordsInfo
- *   - Actualizar todas las demas entradas a partir de esta editada con sus nuevas posiciones
- *   - Se evitara el lag, y todos seremos felices :D!
- * // Cuando hagas funcionar este desastre, optimizalo un poco. Hay muchos bucles. Ya sabes lo que quiero decir!
-*/
+// M'he matat bastant xd

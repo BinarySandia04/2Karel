@@ -23,3 +23,43 @@ MonoBehaviour:
     color: {r: 1, g: 0.48627454, b: 0, a: 0}
   - word: repeat
     color: {r: 1, g: 0.48627454, b: 0, a: 0}
+  - word: repeat
+    color: {r: 1, g: 0.48627454, b: 0, a: 0}
+  - word: repeat
+    color: {r: 1, g: 0.48627454, b: 0, a: 0}
+  - word: move
+    color: {r: 0.30054832, g: 1, b: 0, a: 0}
+  - word: turnLeft
+    color: {r: 0.3019608, g: 1, b: 0, a: 0}
+  - word: turnRight
+    color: {r: 0.3019608, g: 1, b: 0, a: 0}
+  - word: pickBeeper
+    color: {r: 0, g: 0.83468914, b: 1, a: 0}
+  - word: putBeeperInTray
+    color: {r: 0, g: 0.8352942, b: 1, a: 0}
+  - word: exit
+    color: {r: 1, g: 0.14239904, b: 0, a: 0}
+  - word: noExitPresent
+    color: {r: 0.43675518, g: 0, b: 1, a: 0}
+  - word: beepersPresent
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: frontIsClear
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: frontIsBlocked
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: rightIsClear
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: rightIsBlocked
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: leftIsClear
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: leftIsBlocked
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: beepersInBack
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: trayNotFull
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: turnAround
+    color: {r: 0.3019608, g: 1, b: 0, a: 0}
+  - word: main
+    color: {r: 1, g: 0, b: 0.989954, a: 0}
