@@ -10,25 +10,4 @@ So I'm making this game because now I work in Codelearn. And I work for them (no
 
 This game needs to be finished before **March 2019**, I think that is because in March 2019, starts de *Karel Challenge* competition, I hope I make a conference about this game. I will be very happy! :D. Dreaming is free btw.
 
-## To do list: 
-
-### Short term
-- [x] Upgrade to the new Unity 2018.3
-- [x] Do fantastic and beautiful beepers
-- [x] Do walls
-- [x] Make a colorful code editor
-- [x] Solve major code editor bugs to make it stable
-- [ ] Add character spacing
-- [ ] Solve selection bug in code editor
-- [ ] Make a better README.md with more images and things
-### Long term
-- [x] Add text editor
-- [ ] Add map creator
-- [ ] Add main menu
-- [ ] Add campaing mode
-- [ ] Add tutorial
-- [ ] Add multiplayer
-- [ ] Add some special stuff
-- [ ] Do a webpage about the game
-- [ ] Make the game downloadable
-- [ ] Make a launcher
+I will post here all the images of the game while I'm developing!
