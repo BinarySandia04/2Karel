@@ -9,23 +9,103 @@ public class CodeRendering : MonoBehaviour
 {
     // Public variables
     public int debug;
+    [SerializeField]
+    private int lines = 0;
     public KarelWordList WordList;
     private TMP_InputField input;
-    private List<List<int>> coloredWordsInfo = new List<List<int>>(1000); // First int, PURE WORD location start, second one, end
+    private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
+    private List<int> spacingInfo = new List<int>(); // Int with the numbers of spaces required every line!
 
     // Useful functions
+    int getLines() // Devuelve el numero de lineas totales
+    {
+        int lines = 0;
+        for(int i = 0; i < input.text.Length; i++)
+        {
+            if(input.text[i] == '\n')
+            {
+                lines++;
+            }
+        }
+        return lines;
+    }
+    int getLine(int charIndex) // Devuelve en que linea esta el character "charIndex"
+    {
+        int line = 0;
+        for(int i = 0; i < charIndex; i++)
+        {
+            if(input.text[i] == '\n')
+            {
+                line++;
+            }
+        }
+        return line;
+    } // DONE?
+    void RefreshSpacingLines() // Ejecutar SOLO en cada intro
+    {
+        spacingInfo = new List<int>();
+        int lineCount = 0;
+        for(int i = 0; i < input.text.Length; i++)
+        {
+            if (input.text[i] == '{') lineCount++;
+            if (input.text[i] == '}') lineCount--;
+            if (lineCount < 0) lineCount = 0; // Esto si ocurre hay algun error en el codigo que ha hecho el usuario
+            if (input.text[i] == '\n' || i == 0)
+            {
+                spacingInfo.Add(lineCount);
+            }
+        }
+    }
+    int howManySpacesBackwards(int pos)
+    {
+        int i;
+        for (i = 0; input.text[i + pos] == ' '; i--) { }
+        return i * -1;
+    }
+    void SearchForClosingBrackets()
+    {
+        if (input.stringPosition == 0) return;
+        if (input.text[input.stringPosition - 1] == '}' && input.text[input.stringPosition - 2] == ' ')
+        {
+            // Quita 3 espacios anda
+            int howManySpacesWeNeed = (spacingInfo[getLine(input.stringPosition)] * 3) - 3;
+            int i = 0;
+            while(howManySpacesBackwards(input.stringPosition - (i + 2)) > howManySpacesWeNeed)
+            {
+                i++;
+            }
+            if (i == 0) return;
+            input.text = input.text.Substring(0, input.stringPosition - (i + 1)) + input.text.Substring(input.stringPosition - 1, input.text.Length - (input.stringPosition - 1));
+            while(input.text[input.stringPosition - 1] != '}')
+            {
+                input.stringPosition--;
+            } // Setear posicion de inicio
+        }
+    }
+    void DoSpacing()
+    {
+        if (input.text[input.stringPosition - 1] == '\n')
+        {
+            int howManySpaces = spacingInfo[getLine(input.stringPosition)] * 3;
+            string before = input.text.Substring(0, input.stringPosition) + new string(' ', howManySpaces);
+            string after = "";
+            after = input.text.Substring(input.stringPosition, input.text.Length - (input.stringPosition));
+            Debug.Log(after);
+            input.text = before + after;
+            input.stringPosition += howManySpaces;
+        }
+        
 
+    }
     string colorToHex(Color color)
     {
         return ColorUtility.ToHtmlStringRGB(color);
     }
-    
     bool isBetweenOf(int n, int a, int b)
     {
         if (n >= a && n <= b) return true;
         else return false;
     }
-
     void refreshColorInfo(int offset)
     {
        
@@ -57,7 +137,6 @@ public class CodeRendering : MonoBehaviour
             }
         }
     }
-
     int WhereIsCaret(int modifier)
     {
         int cp = input.stringPosition + modifier; // Gets the REAL caret position
@@ -76,21 +155,18 @@ public class CodeRendering : MonoBehaviour
         }
         return -1; // Error no esta en ninguna
     }
-
     int FirstPureWord(int where)
     {
         // If the caret isn't placed in a color, return -1.
         if (where == -1) return where;
         return coloredWordsInfo.ElementAt(where).ElementAt(0);
     }
-
     int LastPureWord(int where)
     {
         // If the caret isn't placed in a color, return -1.
         if (where == -1) return where;
         return coloredWordsInfo.ElementAt(where).ElementAt(1);
     }
-
     bool canHaveColor(string what)
     {
         foreach(KarelWordList.Sentence sen in WordList.wordList)
@@ -99,7 +175,6 @@ public class CodeRendering : MonoBehaviour
         }
         return false;
     }
-
     void removeInnecessaryColors(int offset)
     {
         string whatWord = "";
@@ -139,19 +214,30 @@ public class CodeRendering : MonoBehaviour
 
         refreshColorInfo(-1);
     }
-
+    
     // Void Start and Update
-
     void Start() {
         input = GetComponent<TMP_InputField>();
     }
-
     void Update()
     {
         if (Input.anyKey)
         {
+            if(input.selectionAnchorPosition != input.selectionFocusPosition)
+            {
+                input.selectionAnchorPosition = input.selectionFocusPosition; // Disables selecting. Try solving this in the future
+            }
             ReajustCaret();
-            DoSpacing(); // Ajustar espaciado para codigo bueno bonito barato
+            SearchForClosingBrackets();
+            if (Input.GetKey(KeyCode.Return))
+            {
+                if(lines != getLines())
+                {
+                    lines = getLines();
+                    RefreshSpacingLines();
+                }
+                DoSpacing(); // Ajustar espaciado para codigo bueno bonito barato
+            }
             if (input.stringPosition == input.text.Length)
             {
                 if (Input.GetKey(KeyCode.Backspace)) TryRenderFromEnd();
@@ -177,20 +263,7 @@ public class CodeRendering : MonoBehaviour
             }
         }
     }
-
-    void DoSpacing()
-    {
-        try
-        {
-            if (input.text[input.stringPosition - 1] == '\n')
-            {
-                Debug.Log("Salto linea!");
-            }
-        }
-        catch (Exception) { }
-        
-    }
-
+    
     public void RenderTextColorsOnWrite()
     {
         input = GetComponent<TMP_InputField>();
@@ -202,7 +275,6 @@ public class CodeRendering : MonoBehaviour
         }
         
     } // Implementar a inspector DONE
-
     private void TryRenderFromEnd()
     {
         if (input.stringPosition - 7 < 0) return;
@@ -230,7 +302,6 @@ public class CodeRendering : MonoBehaviour
             else refreshColorInfo(where);
         }
     }
-
     private void TryRemoveColorsInside()
     {
         // Nooot yet
@@ -238,7 +309,6 @@ public class CodeRendering : MonoBehaviour
         // Encima estamos dentro porque si borras x fuera no puedes basicamente, se ejecutaria la otro lol xd
         removeInnecessaryColors(0);
     }
-
     private void TryRemoveColorsOutside()
     {
         // Hacer casi el mismo procedimiento de que si estamos editando lol xd
@@ -273,7 +343,6 @@ public class CodeRendering : MonoBehaviour
         
         
     }
-
     private void ReajustCaret()
     {
         if (input.selectionAnchorPosition != input.selectionFocusPosition)
@@ -317,14 +386,12 @@ public class CodeRendering : MonoBehaviour
         }
 
     } // Not done
-
     private void ReajustSelectionCaret()
     {
         // Cosas con las que input.text.onSelect() o noseque
 
         // Al final haz la funcion de actualizar si sobran <color> y eso. Misma funcion que on edit
     } // Not done
-
     private void TryAddNewColors(string value, string before, string after)
     {
         string colored;
