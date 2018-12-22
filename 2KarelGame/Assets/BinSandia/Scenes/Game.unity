@@ -858,6 +858,7 @@ GameObject:
   - component: {fileID: 717424682}
   - component: {fileID: 717424684}
   - component: {fileID: 717424683}
+  - component: {fileID: 717424685}
   m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
@@ -921,6 +922,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 717424681}
   m_CullTransparentMesh: 0
+--- !u!114 &717424685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717424681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c770c57a643864c8af86af1041b19d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showed: 1
+  coroutining: 0
+  codeEditor: {fileID: 1648464167}
 --- !u!4 &724046541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 802846395600580553, guid: deb89018124fe5d4fabe61ebca62452b,
@@ -1680,9 +1696,9 @@ RectTransform:
   m_Father: {fileID: 1648464168}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -231, y: 1.2}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: -20, y: -0.000012159}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1147972475
@@ -1724,7 +1740,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1147972476}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1648464173}
+        m_MethodName: AlternateColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 717424685}
+        m_MethodName: AlternateColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1147972476
@@ -2182,6 +2220,7 @@ GameObject:
   - component: {fileID: 1648464170}
   - component: {fileID: 1648464169}
   - component: {fileID: 1648464172}
+  - component: {fileID: 1648464173}
   m_Layer: 0
   m_Name: TextMeshPro - InputField
   m_TagString: Untagged
@@ -2205,10 +2244,10 @@ RectTransform:
   m_Father: {fileID: 1676397258}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -211.15, y: 0}
-  m_SizeDelta: {x: 422.3, y: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -200, y: 0}
+  m_SizeDelta: {x: 400, y: 894}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648464169
 MonoBehaviour:
@@ -2373,7 +2412,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 18
+  lines: 0
   WordList: {fileID: 11400000, guid: d1065c512a35f7344a6297c1aa889353, type: 2}
+--- !u!114 &1648464173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648464167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55d2e3612a575442a985678ee9051ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplier: 150
+  speedMultiplier: 750
+  beforeSize: 300
+  nextSize: 300
+  coroutining: 0
+  showed: 1
 --- !u!1 &1676397254
 GameObject:
   m_ObjectHideFlags: 0
@@ -2796,7 +2854,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 5

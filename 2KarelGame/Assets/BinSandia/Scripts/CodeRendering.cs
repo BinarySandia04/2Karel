@@ -16,6 +16,30 @@ public class CodeRendering : MonoBehaviour
     private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
     private List<int> spacingInfo = new List<int>(); // Int with the numbers of spaces required every line!
 
+    void UpdateHeight()
+    {
+        if (GetComponent<SizeChanger>() == null) return;
+        SizeChanger sc = GetComponent<SizeChanger>();
+        int count = 0;
+        int maxCount = 0;
+        // Arregla esto
+        for(int i = 0; i < input.text.Length; i++)
+        {
+            if(!isInsideColor(i)) count++;
+            if(input.text[i] == '\n' || i == input.text.Length - 2)
+            {
+                if(count > maxCount) maxCount = count;
+                count = 0;
+            }
+        }
+        if(isBetweenOf(maxCount, 0, 15))
+        {
+            sc.SetSizeTo(300);
+        } else
+        {
+            sc.SetSizeTo(300 + ((maxCount - 15) * 11));
+        }
+    }
     // Useful functions
     int getLines() // Devuelve el numero de lineas totales
     {
@@ -114,7 +138,7 @@ public class CodeRendering : MonoBehaviour
             offset = 0;
         
         int colors = 0;
-        for (int i = offset; i < input.text.Length - 1; i++)
+        for (int i = offset; i < input.text.Length - 1; i++) // Bug
         {
             if(input.text[i] == '>')
             {
@@ -154,6 +178,17 @@ public class CodeRendering : MonoBehaviour
             }
         }
         return -1; // Error no esta en ninguna
+    }
+    bool isInsideColor(int where)
+    {
+        foreach (List<int> list in coloredWordsInfo)
+        {
+            if (isBetweenOf(where, list.ElementAt(0) - "<color=#ffffff>".Length, list.ElementAt(0)) || isBetweenOf(where, list.ElementAt(1), list.ElementAt(1) + "</color>".Length))
+            {
+                return true; // Esta aqui! Qual numero es...
+            }
+        }
+        return false; // Error no esta en ninguna
     }
     int FirstPureWord(int where)
     {
@@ -223,6 +258,7 @@ public class CodeRendering : MonoBehaviour
     {
         if (Input.anyKey)
         {
+            UpdateHeight();
             if(input.selectionAnchorPosition != input.selectionFocusPosition)
             {
                 input.selectionAnchorPosition = input.selectionFocusPosition; // Disables selecting. Try solving this in the future
