@@ -11,6 +11,7 @@ public class ButtonTextEditor : MonoBehaviour
 
     void Start()
     {
+        if (codeEditor == null) return;
         speedMultiplier = codeEditor.GetComponent<SizeChanger>().speedMultiplier;
     }
 

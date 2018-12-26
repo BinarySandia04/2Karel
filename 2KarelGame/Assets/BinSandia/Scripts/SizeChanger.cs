@@ -6,16 +6,12 @@ public class SizeChanger : MonoBehaviour
     public float multiplier = 5;
     public float speedMultiplier;
 
-    public int beforeSize = 400;
-    public int nextSize = 400;
+    public int beforeSize = -250;
+    public int nextSize = 250;
     public bool coroutining = false;
-
-    void Start()
-    {
-        RectTransform rt = GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector3(-beforeSize / 2, 0, 0); // No
-        rt.sizeDelta = new Vector2(beforeSize, rt.sizeDelta.y);
-    }
+    public int startSize = -250;
+    public int endSize = 250;
+    
 
     public void SetSizeTo(int size)
     {
@@ -88,12 +84,12 @@ public class SizeChanger : MonoBehaviour
         coroutining = true;
         RectTransform rt = GetComponent<RectTransform>();
         float i;
-        for (i = nextSize / 2; i >= -nextSize / 2; i -= (speedMultiplier * Time.deltaTime))
+        for (i = endSize; i >= startSize; i -= (speedMultiplier * Time.deltaTime))
         {
             rt.anchoredPosition = new Vector3(i, 0, 0); // No
             yield return new WaitForSecondsRealtime(0.001f);
         }
-        i = -nextSize / 2;
+        i = startSize;
         rt.anchoredPosition = new Vector3(i, 0, 0); // No
         yield return new WaitForSecondsRealtime(0.001f);
 
@@ -106,12 +102,12 @@ public class SizeChanger : MonoBehaviour
         coroutining = true;
         RectTransform rt = GetComponent<RectTransform>();
         float i;
-        for (i = -nextSize / 2; i <= nextSize / 2; i += (speedMultiplier * Time.deltaTime))
+        for (i = startSize; i <= endSize; i += (speedMultiplier * Time.deltaTime))
         {
             rt.anchoredPosition = new Vector3(i, 0, 0); // No
             yield return new WaitForSecondsRealtime(0.001f);
         }
-        i = nextSize / 2;
+        i = endSize;
         rt.anchoredPosition = new Vector3(i, 0, 0); // No
         yield return new WaitForSecondsRealtime(0.001f);
 

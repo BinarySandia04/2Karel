@@ -17,6 +17,7 @@ MonoBehaviour:
   - {fileID: 114737735823314094}
   - {fileID: 114255279081977188}
   - {fileID: 114396374212546542}
+  - {fileID: 114648245863138190}
 --- !u!114 &114255279081977188
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -43,7 +44,7 @@ MonoBehaviour:
     m_Value: 0.12
   multiplier:
     m_OverrideState: 1
-    m_Value: 0.81
+    m_Value: 1
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 1
@@ -64,12 +65,12 @@ MonoBehaviour:
     m_Value: 1
   sunSize:
     m_OverrideState: 1
-    m_Value: 0.081
+    m_Value: 0.016
     min: 0
     max: 1
   sunSizeConvergence:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 1
     min: 1
     max: 10
   atmosphereThickness:
@@ -79,13 +80,13 @@ MonoBehaviour:
     max: 5
   skyTint:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   groundColor:
     m_OverrideState: 1
-    m_Value: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
+    m_Value: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
@@ -148,6 +149,72 @@ MonoBehaviour:
     m_Value: 0.2
     min: 0
     max: 1
+--- !u!114 &114648245863138190
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81bcacc415a1f743bfdf703afc52027, type: 3}
+  m_Name: GradientSky
+  m_EditorClassIdentifier: 
+  active: 1
+  rotation:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 360
+  skyIntensityMode:
+    m_OverrideState: 0
+    m_Value: 0
+  exposure:
+    m_OverrideState: 0
+    m_Value: 0
+  multiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  upperHemisphereLuxValue:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  desiredLuxValue:
+    m_OverrideState: 0
+    m_Value: 20000
+  updateMode:
+    m_OverrideState: 1
+    m_Value: 0
+  updatePeriod:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+  includeSunInBaking:
+    m_OverrideState: 0
+    m_Value: 0
+  top:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  middle:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0.012613035, b: 0.044811323, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  bottom:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
+  gradientDiffusion:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &114737735823314094
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -163,7 +230,7 @@ MonoBehaviour:
   active: 1
   skyType:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 3
   fogType:
     m_OverrideState: 1
     m_Value: 2
@@ -182,7 +249,7 @@ MonoBehaviour:
   active: 1
   maxShadowDistance:
     m_OverrideState: 1
-    m_Value: 500
+    m_Value: 306.4
     min: 0
   cascadeShadowSplitCount:
     m_OverrideState: 1
@@ -191,17 +258,17 @@ MonoBehaviour:
     max: 4
   cascadeShadowSplit0:
     m_OverrideState: 1
-    m_Value: 0.05
+    m_Value: 0
     min: 0
     max: 1
   cascadeShadowSplit1:
     m_OverrideState: 1
-    m_Value: 0.15
+    m_Value: 0.077
     min: 0
     max: 1
   cascadeShadowSplit2:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 0.197
     min: 0
     max: 1
   cascadeShadowBorder0:

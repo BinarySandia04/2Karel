@@ -55,11 +55,31 @@ MonoBehaviour:
     color: {r: 0.43529415, g: 0, b: 1, a: 0}
   - word: leftIsBlocked
     color: {r: 0.43529415, g: 0, b: 1, a: 0}
-  - word: beepersInBack
+  - word: beepersInBag
     color: {r: 0.43529415, g: 0, b: 1, a: 0}
   - word: trayNotFull
     color: {r: 0.43529415, g: 0, b: 1, a: 0}
   - word: turnAround
     color: {r: 0.3019608, g: 1, b: 0, a: 0}
+  - word: isRemovableWall
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: trayPresent
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: noBeepersPresent
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: removeWall
+    color: {r: 1, g: 0.1894705, b: 0, a: 0}
+  - word: isRemovableWall
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: exitPresent
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: '!'
+    color: {r: 1, g: 0, b: 0.06640482, a: 0}
+  - word: convertBeeperIntoMine
+    color: {r: 1, g: 0.18823531, b: 0, a: 0}
+  - word: isTrueExit
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
+  - word: trayIsMine
+    color: {r: 0.43529415, g: 0, b: 1, a: 0}
   - word: main
-    color: {r: 1, g: 0, b: 0.989954, a: 0}
+    color: {r: 1, g: 0, b: 0.9315591, a: 0}

@@ -7,19 +7,23 @@ using System.Linq;
 
 public class CodeRendering : MonoBehaviour
 {
+    // TODO: Separar esto en una UI diferente
+
     // Public variables
     public int debug;
     [SerializeField]
     private int lines = 0;
     public KarelWordList WordList;
+    public GameObject resizer;
     private TMP_InputField input;
     private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
     private List<int> spacingInfo = new List<int>(); // Int with the numbers of spaces required every line!
 
     void UpdateHeight()
     {
-        if (GetComponent<SizeChanger>() == null) return;
-        SizeChanger sc = GetComponent<SizeChanger>();
+        if (resizer == null) return;
+        if (resizer.GetComponent<SizeChanger>() == null) return;
+        SizeChanger sc = resizer.GetComponent<SizeChanger>();
         int count = 0;
         int maxCount = 0;
         // Arregla esto
@@ -133,9 +137,9 @@ public class CodeRendering : MonoBehaviour
     void refreshColorInfo(int offset)
     {
        
-            // Vaciar
-            coloredWordsInfo = new List<List<int>>();
-            offset = 0;
+        // Vaciar
+        coloredWordsInfo = new List<List<int>>();
+        offset = 0;
         
         int colors = 0;
         for (int i = offset; i < input.text.Length - 1; i++) // Bug
