@@ -12,7 +12,7 @@ public class ButtonTextEditor : MonoBehaviour
     void Start()
     {
         if (codeEditor == null) return;
-        speedMultiplier = codeEditor.GetComponent<SizeChanger>().speedMultiplier;
+        speedMultiplier = codeEditor.GetComponent<MenuUISizeChanger>().speedMultiplier;
     }
 
     // Start is called before the first frame update

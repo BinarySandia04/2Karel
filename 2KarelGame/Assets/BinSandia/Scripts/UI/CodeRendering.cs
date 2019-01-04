@@ -22,8 +22,8 @@ public class CodeRendering : MonoBehaviour
     void UpdateHeight()
     {
         if (resizer == null) return;
-        if (resizer.GetComponent<SizeChanger>() == null) return;
-        SizeChanger sc = resizer.GetComponent<SizeChanger>();
+        if (resizer.GetComponent<MenuUISizeChanger>() == null) return;
+        MenuUISizeChanger sc = resizer.GetComponent<MenuUISizeChanger>();
         int count = 0;
         int maxCount = 0;
         // Arregla esto
