@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 09dfa0d468dbf824d831824fa6ef5b41
+guid: ac44add250b60264e935dbf2ea2a3af4
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Consolas
+  fontName: Staatliches
   fontNames:
-  - Consolas
+  - Staatliches
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

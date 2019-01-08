@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SizeChanger : MonoBehaviour
+public class MenuUISizeChanger : MonoBehaviour
 {
     public float multiplier = 5;
     public float speedMultiplier;
