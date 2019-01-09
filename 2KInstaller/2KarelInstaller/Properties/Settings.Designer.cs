@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _2KInstaller.Properties
+namespace _2KarelInstaller.Properties
 {
 
 

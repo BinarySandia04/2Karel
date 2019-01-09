@@ -1,4 +1,4 @@
-﻿namespace _2KInstaller
+﻿namespace _2KarelInstaller
 {
     partial class Form1
     {
