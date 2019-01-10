@@ -58,6 +58,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
