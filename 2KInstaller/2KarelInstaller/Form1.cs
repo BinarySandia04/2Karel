@@ -70,6 +70,7 @@ namespace _2KarelInstaller
                     label1.Text = "Up to date";
                     // Ejecutar launcher
                     AfterInstallationComprobation();
+                    StartLauncher();
                 }
 
                 /*
@@ -118,8 +119,14 @@ namespace _2KarelInstaller
             if(e.ProgressPercentage == 100)
             {
                 // Hacer algo una vez descargado.
-                System.Diagnostics.Process.Start(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher/2KLauncher.exe");
+                StartLauncher();
             }
+        }
+
+        void StartLauncher()
+        {
+            System.Diagnostics.Process.Start(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher/2KLauncher.exe");
+            Environment.Exit(0);
         }
 
         public void AfterInstallationComprobation()
