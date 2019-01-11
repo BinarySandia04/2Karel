@@ -15,7 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_9860247131A575D7D2EC1862DA8E2D19"
+        "MsmKey" = "8:_26E56FE78E884247AA2564B2A4209CD8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A47A02B780594E48BDD584E0742522A2"
         "OwnerKey" = "8:_C3F9028ED12F43C89D17E397F7667782"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -28,13 +34,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9860247131A575D7D2EC1862DA8E2D19"
+        "OwnerKey" = "8:_C3F9028ED12F43C89D17E397F7667782"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C3F9028ED12F43C89D17E397F7667782"
+        "OwnerKey" = "8:_A47A02B780594E48BDD584E0742522A2"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -55,6 +61,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -71,6 +93,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -100,14 +130,34 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9860247131A575D7D2EC1862DA8E2D19"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_26E56FE78E884247AA2564B2A4209CD8"
+            {
+            "SourcePath" = "8:..\\2KarelInstaller\\karel.ico"
+            "TargetName" = "8:karel.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_E7AD0345AC36455B96095C0436C28F0E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A47A02B780594E48BDD584E0742522A2"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_9860247131A575D7D2EC1862DA8E2D19"
+                    "_A47A02B780594E48BDD584E0742522A2"
                     {
                     "Name" = "8:System.Net.Http.dll"
                     "Attributes" = "3:512"
@@ -116,7 +166,7 @@
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_A94609152D3642769A7D63A7FE195DEF"
+            "Folder" = "8:_F48186C033D0492F957922FC1102B00D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -139,7 +189,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_A94609152D3642769A7D63A7FE195DEF"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[AppDataFolder]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -147,6 +197,28 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_E7AD0345AC36455B96095C0436C28F0E"
+                    {
+                    "Name" = "8:2Karel"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_7432C8C744D14C2686F135A4897C15E2"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_F48186C033D0492F957922FC1102B00D"
+                            {
+                            "Name" = "8:2KInstaller"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_DECFCCB821684D31844A414A41C32795"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_E0B4A8E695F440CD9F87CEA4D991BFE6"
@@ -188,7 +260,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:2KSetup"
         "ProductCode" = "8:{9D707D8D-BFDB-405E-9E47-006152B6677C}"
-        "PackageCode" = "8:{96604025-7B04-4C45-B451-FE64809E878F}"
+        "PackageCode" = "8:{529B48F8-929B-4DDF-AF6B-C5972DA1CF91}"
         "UpgradeCode" = "8:{AE8416EC-21CE-4906-9A59-3D01BB8087C3}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -196,12 +268,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:aranseraroig@gmail.com"
+        "Manufacturer" = "8:BinarySandia"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:2KSetup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:aranseraroig@gmail.com"
+        "ARPCONTACT" = "8:BinarySandia"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -308,6 +380,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1F8043F4B0D74181B8C18166C06D7D04"
+            {
+            "Name" = "8:2Karel"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_C3F9028ED12F43C89D17E397F7667782"
+            "Folder" = "8:_E0B4A8E695F440CD9F87CEA4D991BFE6"
+            "WorkingFolder" = "8:_F48186C033D0492F957922FC1102B00D"
+            "Icon" = "8:_26E56FE78E884247AA2564B2A4209CD8"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -358,8 +444,8 @@
                             "Type" = "3:3"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1202"
+                            "Setting" = "3:2"
+                            "Value" = "8:"
                             "DefaultValue" = "8:#1202"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -396,41 +482,6 @@
                             "ContextData" = "8:Bitmap"
                             "Attributes" = "3:4"
                             "Setting" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                        }
-                    }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_E1E6A7157D454EE385995C0B8E60FC5C"
-                    {
-                    "Sequence" = "3:200"
-                    "DisplayName" = "8:Carpeta de instalación"
-                    "UseDynamicProperties" = "11:TRUE"
-                    "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdFolderDlg.wid"
-                        "Properties"
-                        {
-                            "BannerBitmap"
-                            {
-                            "Name" = "8:BannerBitmap"
-                            "DisplayName" = "8:#1001"
-                            "Description" = "8:#1101"
-                            "Type" = "3:8"
-                            "ContextData" = "8:Bitmap"
-                            "Attributes" = "3:4"
-                            "Setting" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "InstallAllUsersVisible"
-                            {
-                            "Name" = "8:InstallAllUsersVisible"
-                            "DisplayName" = "8:#1059"
-                            "Description" = "8:#1159"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:1"
-                            "DefaultValue" = "3:1"
                             "UsePlugInResources" = "11:TRUE"
                             }
                         }
@@ -712,7 +763,7 @@
             "SourcePath" = "8:..\\2KarelInstaller\\obj\\Debug\\2KarelInstaller.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_A94609152D3642769A7D63A7FE195DEF"
+            "Folder" = "8:_F48186C033D0492F957922FC1102B00D"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
