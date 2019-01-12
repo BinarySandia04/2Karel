@@ -30,7 +30,7 @@ namespace _2KLauncher
         {
             if(!File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "versions.xml")){
                 // Actualizacion (primera vez?)
-                File.Move(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "newversions.xml", Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "versions.xml");
+                if(File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "newversions.xml")) File.Move(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "newversions.xml", Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "versions.xml");
                 return true;
             } else
             {
