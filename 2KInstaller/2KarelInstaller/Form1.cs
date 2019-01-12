@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
+using System.ComponentModel;
 
 namespace _2KarelInstaller
 {
@@ -88,18 +89,19 @@ namespace _2KarelInstaller
                     // Param2 = Path to save
                     path
                 );
+                wc.DownloadFileCompleted += DownloadCompleted;
             }
         }
-        
+
+        private void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            StartLauncher();
+        }
+
         // Event to track the progress
         void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
-            if(e.ProgressPercentage == 100)
-            {
-                // Hacer algo una vez descargado.
-                StartLauncher();
-            }
         }
 
         void StartLauncher()
