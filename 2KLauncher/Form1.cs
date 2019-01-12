@@ -109,8 +109,9 @@ namespace _2KLauncher
             changeFormTitle("2Karel Launcher - Installing");
             using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
             {
-                zip.ExtractAll(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KarelGame/", ExtractExistingFileAction.OverwriteSilently);
                 zip.ExtractProgress += install_progress;
+                zip.ExtractAll(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KarelGame/", ExtractExistingFileAction.OverwriteSilently);
+                
                 totalFiles = zip.Count;
             }
         }
