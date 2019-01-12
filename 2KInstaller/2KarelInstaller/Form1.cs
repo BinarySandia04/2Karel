@@ -63,7 +63,10 @@ namespace _2KarelInstaller
                         MessageBox.Show("No se puede instalar el launcher. Comprueba tu conexión a internet y vuelve a intentarlo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Environment.Exit(0);
                     }
-                } else
+                label1.Text = "Up to date";
+                AfterInstallationComprobation();
+                StartLauncher();
+            } else
                 {
                     label1.Text = "Up to date";
                     // Ejecutar launcher
