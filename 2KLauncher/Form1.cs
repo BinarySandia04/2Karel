@@ -158,6 +158,7 @@ namespace _2KLauncher
 
         void LaunchGame()
         {
+            MessageBox.Show("Abriendo juego...");
             if (File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame/2Karel.exe"))
             {
                 Process.Start(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame/2Karel.exe");
