@@ -69,13 +69,13 @@ namespace _2KLauncher
         {
             // Intenta borrar juego
             try { Directory.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame"); } catch (Exception) { }
-            
 
+            changeFormTitle("2Karel Launcher - Downloading");
             using (WebClient wc = new WebClient())
             {
                 wc.DownloadProgressChanged += download_progressChanged;
                 wc.DownloadFileCompleted += download_completed;
-                wc.DownloadFileAsync(new Uri("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KG.rar"), Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip");
+                wc.DownloadFileAsync(new Uri("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KG.zip"), Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip");
             }
         }
 
@@ -99,12 +99,14 @@ namespace _2KLauncher
         {
             changeDownloadBarPercentage1(e.ProgressPercentage);
             changeDownloadText1(e.ProgressPercentage + "%");
+            changeBottomDownloadMessage("Progreso: " + (e.ProgressPercentage * 66 / 100) + "%");
         }
         
 
         private void InstallGame()
         {
             /*...*/
+            changeFormTitle("2Karel Launcher - Installing");
             using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
             {
                 zip.ExtractProgress += new EventHandler<ExtractProgressEventArgs>(install_progress);
@@ -119,6 +121,7 @@ namespace _2KLauncher
             {
                 changeDownloadBarPercentage2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer));
                 changeDownloadText2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) + "%");
+                changeBottomDownloadMessage("Progreso: " + (66 + (Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) * 33 / 100)) + "%");
             }
             if(e.TotalBytesToTransfer == e.BytesTransferred)
             {
