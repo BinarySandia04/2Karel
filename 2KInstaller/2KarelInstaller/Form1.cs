@@ -72,17 +72,7 @@ namespace _2KarelInstaller
                     AfterInstallationComprobation();
                     StartLauncher();
                 }
-
-                /*
-                using (WebClient wc = new WebClient())
-                {
-                    wc.DownloadFileAsync(
-                        // Param1 = Link of file
-                        new System.Uri("https://github.com/BinarySandia04/BinarySandia04.github.io/raw/master/download/2KSetup.msi"),
-                        // Param2 = Path to save
-                        Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "lol.msi"
-                    );
-                }*/
+                
             }
             else
             {
