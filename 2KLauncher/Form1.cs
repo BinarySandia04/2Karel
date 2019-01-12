@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using Ionic.Zip;
 
 namespace _2KLauncher
 {
@@ -61,6 +65,74 @@ namespace _2KLauncher
             }
         }
 
+        void DownloadGame()
+        {
+            // Intenta borrar juego
+            try { Directory.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame"); } catch (Exception) { }
+            
+
+            using (WebClient wc = new WebClient())
+            {
+                wc.DownloadProgressChanged += download_progressChanged;
+                wc.DownloadFileCompleted += download_completed;
+                wc.DownloadFileAsync(new Uri("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KG.rar"), Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip");
+            }
+        }
+
+        private void download_completed(object sender, AsyncCompletedEventArgs e)
+        {
+            // Cosas
+            if(File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
+            {
+                changeDownloadBarPercentage1(100);
+                changeDownloadText1("100%");
+                InstallGame();
+            } else
+            {
+                MessageBox.Show("Descarga incorrecta. Abortando", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(2);
+            }
+            
+        }
+        
+        private void download_progressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            changeDownloadBarPercentage1(e.ProgressPercentage);
+            changeDownloadText1(e.ProgressPercentage + "%");
+        }
+        
+
+        private void InstallGame()
+        {
+            /*...*/
+            using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
+            {
+                zip.ExtractProgress += new EventHandler<ExtractProgressEventArgs>(install_progress);
+                zip.ExtractAll(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KarelGame/", ExtractExistingFileAction.OverwriteSilently);
+               
+            }
+        }
+
+        void install_progress(object sender, ExtractProgressEventArgs e)
+        {
+            if (e.TotalBytesToTransfer > 0)
+            {
+                changeDownloadBarPercentage2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer));
+                changeDownloadText2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) + "%");
+            }
+            if(e.TotalBytesToTransfer == e.BytesTransferred)
+            {
+                // Done
+                install_done();
+            }
+            
+        }
+
+        private void install_done()
+        {
+            LaunchGame();
+        }
+
         void CheckForUpdates()
         {
             changeFormTitle("2Karel Launcher");
@@ -74,6 +146,7 @@ namespace _2KLauncher
             if (CheckForNewVersionXml())
             {
                 // Update
+                DownloadGame();
             } else {
                 // No update
                 LaunchGame();
@@ -82,9 +155,10 @@ namespace _2KLauncher
 
         void LaunchGame()
         {
-            if (File.Exists("Path to game...."))
+            if (File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame/2Karel.exe"))
             {
-
+                Process.Start(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame/2Karel.exe");
+                Environment.Exit(1);
             }
             else
             {
