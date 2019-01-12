@@ -33,8 +33,7 @@ namespace _2KarelInstaller
             // Comprobar carpeta
             InitialErrorComprobation();
 
-            if (CheckForLauncherUpdate())
-            {
+           
                 bool firstTime = false;
                 string actualVersion = "";
                 if (!File.Exists(verxml))
@@ -72,16 +71,7 @@ namespace _2KarelInstaller
                     StartLauncher();
                 }
                 
-            }
-            else
-            {
-                // Launch launcher!
-            }
-        }
-
-        private bool CheckForLauncherUpdate()
-        {
-            return true;
+            
         }
 
         public void DownloadAsyncLauncher(string uri, string path)

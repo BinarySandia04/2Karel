@@ -118,7 +118,7 @@ namespace _2KLauncher
 
         void install_progress(object sender, ExtractProgressEventArgs e)
         {
-            if (e.EntriesExtracted == e.EntriesTotal)
+            if (e.EntriesExtracted == e.EntriesTotal && e.EntriesTotal > 0)
             {
                 install_done();
             }
