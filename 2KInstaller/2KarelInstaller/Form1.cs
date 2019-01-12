@@ -10,7 +10,7 @@ namespace _2KarelInstaller
     public partial class Form1 : Form
     {
         public string dir = Directory.GetCurrentDirectory();
-        public string verxml = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "versions.xml";
+        public string verxml = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "newversions.xml";
         public Form1()
         {
             InitializeComponent();
@@ -43,7 +43,6 @@ namespace _2KarelInstaller
                 } else
                 {
                     actualVersion = readVersion();
-                    File.Delete(verxml);
                 }
                 
                 DownloadAndWait("https://github.com/BinarySandia04/2Karel/raw/master/Releases/versions.xml", verxml);
@@ -54,6 +53,10 @@ namespace _2KarelInstaller
                     string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher";
                     if (!Directory.Exists(path))
                     {
+                        Directory.CreateDirectory(path);
+                    } else
+                    {
+                        Directory.Delete(path);
                         Directory.CreateDirectory(path);
                     }
                     try

@@ -4,4 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/BinSandia/Scenes/Game/Game.unity
+    guid: 52dcdb28c0b8bfb42bd287c4725e9cf3
+  m_configObjects: {}
