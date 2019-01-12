@@ -120,12 +120,13 @@ namespace _2KLauncher
             filesExtracted++;
             if (e.EventType != ZipProgressEventType.Extracting_BeforeExtractEntry)
                 return;
+            if (e.EventType == ZipProgressEventType.Extracting_AfterExtractAll)
+            {
+                install_done();
+            }
             if (e.TotalBytesToTransfer > 0)
             {
-                if (e.EventType == ZipProgressEventType.Extracting_AfterExtractAll)
-                {
-                    install_done();
-                }
+                
                 changeDownloadBarPercentage2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer));
                 changeDownloadText2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) + "%");
                 changeBottomDownloadMessage("Progreso: " + (66 + (Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) * 33 / 100)) + "%");
