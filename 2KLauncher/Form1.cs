@@ -119,14 +119,13 @@ namespace _2KLauncher
         {
             if (e.TotalBytesToTransfer > 0)
             {
+                if(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) == 100)
+                {
+                    install_done();
+                }
                 changeDownloadBarPercentage2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer));
                 changeDownloadText2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) + "%");
                 changeBottomDownloadMessage("Progreso: " + (66 + (Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) * 33 / 100)) + "%");
-            }
-            if(e.TotalBytesToTransfer == e.BytesTransferred)
-            {
-                // Done
-                install_done();
             }
             
         }
