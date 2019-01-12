@@ -6,7 +6,7 @@
 
 ## More things about 2Karel!
 
-### What is every folder used by?
+### What is every folder used for?
 
 - **2KInstaller**: Source code of the 2KInstaller and 2KSetup
 - **2KLauncher**: Source code of the 2KLauncher
