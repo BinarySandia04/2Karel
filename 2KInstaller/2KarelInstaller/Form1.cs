@@ -53,13 +53,9 @@ namespace _2KarelInstaller
                     string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher";
                     if (!Directory.Exists(path))
                     {
-                        Directory.CreateDirectory(path);
-                    } else
-                    {
-                        Directory.Delete(path);
-                        Directory.CreateDirectory(path);
+                        MessageBox.Show("No se puede instalar el launcher. Faltan archivos. Prueba de reinstalar el programa", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    try
+                        try
                     {
                         DownloadAsyncLauncher("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KLauncher.exe", Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher/2KLauncher.exe");
                     }
