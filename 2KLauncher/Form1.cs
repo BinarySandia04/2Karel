@@ -101,8 +101,8 @@ namespace _2KLauncher
             changeDownloadText1(e.ProgressPercentage + "%");
             changeBottomDownloadMessage("Progreso: " + (e.ProgressPercentage * 66 / 100) + "%");
         }
-        
-
+        private int totalFiles = 0;
+        private int filesExtracted = 0;
         private void InstallGame()
         {
             /*...*/
@@ -111,15 +111,18 @@ namespace _2KLauncher
             {
                 zip.ExtractProgress += new EventHandler<ExtractProgressEventArgs>(install_progress);
                 zip.ExtractAll(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KarelGame/", ExtractExistingFileAction.OverwriteSilently);
-               
+                totalFiles = zip.Count;
             }
         }
 
         void install_progress(object sender, ExtractProgressEventArgs e)
         {
+            filesExtracted++;
+            if (e.EventType != ZipProgressEventType.Extracting_BeforeExtractEntry)
+                return;
             if (e.TotalBytesToTransfer > 0)
             {
-                if(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) == 100)
+                if (filesExtracted == totalFiles)
                 {
                     install_done();
                 }
