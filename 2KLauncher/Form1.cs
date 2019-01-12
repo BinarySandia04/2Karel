@@ -109,24 +109,20 @@ namespace _2KLauncher
             changeFormTitle("2Karel Launcher - Installing");
             using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
             {
-                zip.ExtractProgress += new EventHandler<ExtractProgressEventArgs>(install_progress);
                 zip.ExtractAll(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KarelGame/", ExtractExistingFileAction.OverwriteSilently);
+                zip.ExtractProgress += install_progress;
                 totalFiles = zip.Count;
             }
         }
 
         void install_progress(object sender, ExtractProgressEventArgs e)
         {
-            filesExtracted++;
-            if (e.EventType != ZipProgressEventType.Extracting_BeforeExtractEntry)
-                return;
             if (e.EventType == ZipProgressEventType.Extracting_AfterExtractAll)
             {
                 install_done();
             }
             if (e.TotalBytesToTransfer > 0)
             {
-                
                 changeDownloadBarPercentage2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer));
                 changeDownloadText2(Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) + "%");
                 changeBottomDownloadMessage("Progreso: " + (66 + (Convert.ToInt32(100 * e.BytesTransferred / e.TotalBytesToTransfer) * 33 / 100)) + "%");
