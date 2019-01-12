@@ -122,7 +122,7 @@ namespace _2KLauncher
                 return;
             if (e.TotalBytesToTransfer > 0)
             {
-                if (filesExtracted == totalFiles)
+                if (e.EventType == ZipProgressEventType.Extracting_AfterExtractAll)
                 {
                     install_done();
                 }
