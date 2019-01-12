@@ -120,6 +120,7 @@ namespace _2KLauncher
         {
             if (e.EntriesExtracted == e.EntriesTotal && e.EntriesTotal > 0)
             {
+                MessageBox.Show("Extracted: " + e.EntriesExtracted + " total: " + e.EntriesTotal);
                 install_done();
             }
             if (e.TotalBytesToTransfer > 0)
