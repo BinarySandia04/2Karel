@@ -18,6 +18,8 @@ public class CodeRendering : MonoBehaviour
     private TMP_InputField input;
     private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
     private List<int> spacingInfo = new List<int>(); // Int with the numbers of spaces required every line!
+    [SerializeField]
+    private bool s_coloringEnabled;
 
     void UpdateHeight()
     {
@@ -260,50 +262,88 @@ public class CodeRendering : MonoBehaviour
     }
     void Update()
     {
-        if (Input.anyKey)
+        if (s_coloringEnabled)
+        {
+            if (Input.anyKey)
+            {
+                UpdateHeight();
+                if (input.selectionAnchorPosition != input.selectionFocusPosition)
+                {
+                    input.selectionAnchorPosition = input.selectionFocusPosition; // Disables selecting. Try solving this in the future
+                }
+                ReajustCaret();
+                SearchForClosingBrackets();
+                if (Input.GetKey(KeyCode.Return))
+                {
+                    if (lines != getLines())
+                    {
+                        lines = getLines();
+                        RefreshSpacingLines();
+                    }
+                    DoSpacing(); // Ajustar espaciado para codigo bueno bonito barato
+                }
+                if (input.stringPosition == input.text.Length)
+                {
+                    if (Input.GetKey(KeyCode.Backspace)) TryRenderFromEnd();
+                    else RenderTextColorsOnWrite();
+                }
+                else
+                {
+                    // Now you don't inside or outside?
+                    //RenderTextColorsOnWrite(); // Aaaah pon aqui la function para actualizar colores.
+                    if (Input.anyKeyDown) removeInnecessaryColors(0);
+                    if (Input.GetKey(KeyCode.Backspace))
+                    {
+                        if (WhereIsCaret(0) != -1) // La verdad es que solo nos interesa quitar si estamos dentro lool xd
+                        {
+                            TryRemoveColorsInside();
+                        }
+                        else
+                        {
+                            TryRemoveColorsOutside(); // Estamos fuera del color, pero ns
+                        }
+                    }
+                    else
+                    {
+                        RenderTextColorsOnWrite();
+                    }
+                }
+            }
+        }
+        else
         {
             UpdateHeight();
-            if(input.selectionAnchorPosition != input.selectionFocusPosition)
+            if (Input.anyKey)
             {
-                input.selectionAnchorPosition = input.selectionFocusPosition; // Disables selecting. Try solving this in the future
-            }
-            ReajustCaret();
-            SearchForClosingBrackets();
-            if (Input.GetKey(KeyCode.Return))
-            {
-                if(lines != getLines())
+                SearchForClosingBrackets();
+                if (Input.GetKey(KeyCode.Return))
                 {
-                    lines = getLines();
-                    RefreshSpacingLines();
-                }
-                DoSpacing(); // Ajustar espaciado para codigo bueno bonito barato
-            }
-            if (input.stringPosition == input.text.Length)
-            {
-                if (Input.GetKey(KeyCode.Backspace)) TryRenderFromEnd();
-                else RenderTextColorsOnWrite();
-            } else
-            {
-                // Now you don't inside or outside?
-                //RenderTextColorsOnWrite(); // Aaaah pon aqui la function para actualizar colores.
-                if(Input.anyKeyDown) removeInnecessaryColors(0);
-                if (Input.GetKey(KeyCode.Backspace))
-                {
-                    if (WhereIsCaret(0) != -1) // La verdad es que solo nos interesa quitar si estamos dentro lool xd
+                    if (lines != getLines())
                     {
-                        TryRemoveColorsInside();
-                    } else
-                    {
-                        TryRemoveColorsOutside(); // Estamos fuera del color, pero ns
+                        lines = getLines();
+                        RefreshSpacingLines();
                     }
-                } else
-                {
-                    RenderTextColorsOnWrite();
+                    DoSpacing();
                 }
             }
         }
     }
     
+    // Enable and disable color rendering
+    public void EnableColorRendering()
+    {
+        s_coloringEnabled = true;
+        // Update colors
+        RenderTextColorsOnWrite();
+    }
+    public void DisableColorRendering()
+    {
+        s_coloringEnabled = false;
+        // Remove colors
+        TextRemoveColors();
+    }
+
+    // Color rendering
     public void RenderTextColorsOnWrite()
     {
         input = GetComponent<TMP_InputField>();
@@ -476,6 +516,43 @@ public class CodeRendering : MonoBehaviour
             }
         }
     }  // TODO Much work, rompe esto en fracciones
+
+    // Code translation
+    private void TextRemoveColors()
+    {
+        string finaltext = "";
+        for(int i = 0; i < input.text.Length; i++)
+        {
+            if(input.text[i] == '<')
+            {
+                // No añadir hasta tal
+                int of = 0;
+                while(input.text[i + of] != '>')
+                {
+                    of++;
+                    if ((i + of) >= input.text.Length) break;
+                }
+                i = i + of;
+            } else
+            {
+                finaltext += input.text[i];
+            }
+        }
+        Debug.Log("Texto traducido a: " + finaltext);
+        input.text = finaltext;
+    }
+
+    // Settings integration (toogle on ingame ui settings menu)
+    public void ChangeColorRendering()
+    {
+        if (s_coloringEnabled)
+        {
+            DisableColorRendering();
+        } else
+        {
+            EnableColorRendering();
+        }
+    }
 }
 
 // M'he matat bastant xd
