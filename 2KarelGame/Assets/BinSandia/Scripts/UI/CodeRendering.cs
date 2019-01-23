@@ -11,15 +11,16 @@ public class CodeRendering : MonoBehaviour
 
     // Public variables
     public int debug;
-    [SerializeField]
     private int lines = 0;
     public KarelWordList WordList;
     public GameObject resizer;
     private TMP_InputField input;
     private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
     private List<int> spacingInfo = new List<int>(); // Int with the numbers of spaces required every line!
-    [SerializeField]
-    private bool s_coloringEnabled;
+    [HideInInspector]
+    public bool s_coloringEnabled = true; // By default
+    [Space]
+    public GameObject player;
 
     void UpdateHeight()
     {

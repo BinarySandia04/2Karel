@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
     public Texture2D map;
     public ColorMapping[] mappings;
+    [Space]
+    public GameObject codeEditor;
+    public List<GameObject> generatedObjectsInLevel = new List<GameObject>();
 
     [System.Serializable]
     public class ColorMapping
@@ -38,13 +42,37 @@ public class LevelGenerator : MonoBehaviour
             
             if (mapin.color.Equals(pc))
             {
-                Debug.Log("Pixel");
                 Vector3 position = new Vector3(x * 3, 0, y * 3);
                 foreach(GameObject prefab in mapin.prefabs)
                 {
-                    Instantiate(prefab, position, Quaternion.identity, transform);
+                    GameObject ins = Instantiate(prefab, position, Quaternion.identity, transform);
+                    ObjectPropieties prop = ins.GetComponent<ObjectPropieties>();
+                    prop.xCoord = x;
+                    prop.yCoord = y;
+                    if (prefab.name == "Player")
+                    {
+                        codeEditor.GetComponent<CodeRendering>().player = ins;
+                        // El player lleva un KarelPlayer puesto ya en el prefab,
+                        // Y ahora assignamos al gameobject KarelPlayer que sea capaz de acceder a este script
+                        // y usar la funcion getObjectCoord
+                        ins.GetComponent<KarelPlayer>().levelGenerator = gameObject;
+                    }
+                    generatedObjectsInLevel.Add(ins);
                 }
             }
         }
+    }
+
+    public GameObject getObjectCoord(int x, int y)
+    {
+        // Falta optimización
+        foreach(GameObject g in generatedObjectsInLevel)
+        {
+            if(g.GetComponent<ObjectPropieties>().xCoord == x && g.GetComponent<ObjectPropieties>().yCoord == y)
+            {
+                return g;
+            }
+        }
+        return null;
     }
 }
