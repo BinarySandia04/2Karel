@@ -33,6 +33,10 @@ public class KarelPlayer : MonoBehaviour
     public bool isRemovableWall;
     public bool trayIsMine;
     public bool isTrueExit;
+    [Space]
+    [Header("Coding")]
+    public string bufferCode;
+    public bool running;
 
     public enum Orientation
     {
@@ -46,7 +50,7 @@ public class KarelPlayer : MonoBehaviour
     public Orientation or = Orientation.North;
 
 
-    // ALERTA: Codigo bastante largo y aburrido
+    // ALERTA: Funcion bastante larga y aburrida
     void checkBools()
     {
         int playerX = GetComponent<ObjectPropieties>().xCoord;
@@ -234,7 +238,6 @@ public class KarelPlayer : MonoBehaviour
             noTrayPresent = true;
         }
     }
-    
     void translateCurrentPosition(int x, int y)
     {
         ObjectPropieties op = GetComponent<ObjectPropieties>();
@@ -247,66 +250,133 @@ public class KarelPlayer : MonoBehaviour
     {
         if(or == Orientation.North)
         {
-
+            // Animation
+            translateCurrentPosition(0, 1);
         } else if(or == Orientation.South)
         {
-
+            translateCurrentPosition(0, -1);
         } else if(or == Orientation.East)
         {
-
+            translateCurrentPosition(1, 0);
         } else if(or == Orientation.West){
-
+            translateCurrentPosition(-1, 0);
         } else
         {
-
+            Debug.LogWarning("Orientation undefined when moving Karel");
         }
     }
-
     public void KarelTurnLeft()
     {
         if (or == Orientation.North)
         {
-
+            or = Orientation.West;
         }
         else if (or == Orientation.South)
         {
-
+            or = Orientation.East;
         }
         else if (or == Orientation.East)
         {
-
+            or = Orientation.North;
         }
         else if (or == Orientation.West)
         {
-
+            or = Orientation.South;
         }
         else
         {
-
+            Debug.LogWarning("Orientation undefined when turning left karel");
         }
     }
-
     public void KarelTurnRight()
     {
         if (or == Orientation.North)
         {
-
+            or = Orientation.East;
         }
         else if (or == Orientation.South)
         {
-
+            or = Orientation.West;
         }
         else if (or == Orientation.East)
         {
-
+            or = Orientation.South;
         }
         else if (or == Orientation.West)
         {
-
+            or = Orientation.North;
         }
         else
         {
-
+            Debug.LogWarning("Orientation undefined when turning right karel");
         }
+    }
+
+    // Magia
+    public string translateCode(string code)
+    {
+        // Aqui convertiremos nuestro codigo en identificadores especiales para que después
+        // en la función extractCode sea más fácil programarla
+        /*
+         * En esta funcion se escribira con los prefijos de más abajo separados por comas.
+         * La string final no deveria de encontrar repeats ni cosas extrañas.
+         * Aqui hacemos toda la transformacion. Primero comprobando de que no hayan espacios
+         * ni saltos de línea eliminando estos.
+         */
+        /*
+         * ------- FUNCIONES ---------
+         * mv - Move
+         * tl - TurnLeft
+         * tr - TurnRight
+         * wh<> - while (acepta bool)
+         * ex - exit
+         * ------- BOOLEANOS ---------
+         * ep - no / exit present
+         * bp - no / beepers present
+         * bg - no / beepers in bag
+         * fb - front blocked / clear
+         * rb - right blocked / clear
+         * lb - left blocked / clear
+         * tp - no / tray present
+         * tf - no / tray full
+         * ----------------------------
+         * 
+         * NOTA: Hay que iterar de manera recursiva los whiles.
+         */
+
+        // FASE 1: Eliminar colores, espacios i saltos de linea
+        string clear = "";
+        for (int i = 0; i < code.Length; i++)
+        {
+            if (code[i] == '<')
+            {
+                // No añadir hasta tal
+                int of = 0;
+                while (code[i + of] != '>')
+                {
+                    of++;
+                    if ((i + of) >= code.Length) break;
+                }
+                i = i + of;
+            }
+            else
+            {
+                if(code[i] != ' ' && code[i] != '\n') clear += code[i];
+            }
+        }
+        code = clear;
+        // FASE 2: Interpretar (hard TUDU WIP)
+        string resulting = "";
+        /*
+         * Primero: Definir funciones
+         * Segundo: Entonces definir repeats
+         * Tercero: ggwp
+         */
+
+        return code;
+    }
+    public void extractCode(string code)
+    {
+
     }
 }
