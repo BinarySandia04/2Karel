@@ -1,6 +1,7 @@
 ﻿// IN PROGRESS
 
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class KarelPlayer : MonoBehaviour
@@ -179,6 +180,8 @@ public class KarelPlayer : MonoBehaviour
 
         // Paso 1 - quitar espacios i saltos de linea
         string compiledCode = removeSpaces(bufferCode); // Tenemos el codigo sin espacios
+        // Comprobar gramatica
+
         // Paso 2 - definir functiones
         List<Function> funcions = getFunctions(compiledCode); // Tenemos en la lista funcions el contenido de todas las funciones y sus nombres
         // Vamos a comprobar que tenemos la funcion main
@@ -504,12 +507,35 @@ public class KarelPlayer : MonoBehaviour
     }
     public List<Function> getFunctions(string code)
     {
-        // TODO (mirar linea 183)
-        return new List<Function>();
+        // Ya esta
+        // TODO: Testing intensivo
+        List<Function> functions = new List<Function>();
+        int funcNumber = Regex.Matches(code, "function").Count;
+        int pointing = 0;
+        code.Replace("function", "");
+        for(int func = 0; func < funcNumber; func++)
+        {
+            Function finalFunc = new Function();
+            // main(){move();repeat(3){move();]exit();} [EJEMPLO]
+            int firstPoint;
+            for (firstPoint = pointing; code[pointing] != '(' && pointing != code.Length; pointing++) { }
+            finalFunc.funcName = substrWithInt(code, firstPoint, pointing - 1);
+            pointing += 4; // Principio de funcion
+            // Ahora incluir hasta final de funcion
+            firstPoint = pointing;
+            for(int brackets = 1; brackets > 0 && pointing != code.Length; pointing++)
+            {
+                if (code[pointing] == '{') brackets++;
+                if (code[pointing] == '}') brackets--;
+            }
+            finalFunc.funcContent = substrWithInt(code, firstPoint, pointing - 1);
+            functions.Add(finalFunc);
+        }
+        return functions;
     }
     public string cleanDefinitedString(string code)
     {
-        // TODO (mirar linea 197)
+        // TODO (mirar linea 200) lol
         return "kaka";
     }
     private List<int> findSubstr(string str, string find, bool final)
@@ -524,6 +550,13 @@ public class KarelPlayer : MonoBehaviour
             }
         }
         return positions;
+    }
+    private string substrWithInt(string str, int start, int end)
+    {
+        string res = "";
+        if (start >= end) return res;
+        for (; start <= end; start++) res += str[start];
+        return res;
     }
 
     // Exception handling
