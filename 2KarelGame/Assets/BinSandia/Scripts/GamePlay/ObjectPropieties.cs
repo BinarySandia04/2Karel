@@ -2,7 +2,5 @@
 
 public class ObjectPropieties : MonoBehaviour
 {
-    [Header("Object")]
-    public int xCoord;
-    public int yCoord;
+    public Position pos;
 }

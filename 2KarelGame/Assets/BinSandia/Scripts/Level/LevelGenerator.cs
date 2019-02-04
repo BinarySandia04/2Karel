@@ -7,7 +7,7 @@ public class LevelGenerator : MonoBehaviour
     public ColorMapping[] mappings;
     [Space]
     public GameObject codeEditor;
-    public List<GameObject> generatedObjectsInLevel = new List<GameObject>();
+    public static List<GameObject> generatedObjectsInLevel = new List<GameObject>();
 
     [System.Serializable]
     public class ColorMapping
@@ -16,13 +16,16 @@ public class LevelGenerator : MonoBehaviour
         public GameObject[] prefabs;
     }
 
-    void Start()
+    public void GenerateLevel(Texture2D map)
     {
-        GenerateLevel();
-    }
+        // Clears the level
+        while(generatedObjectsInLevel.Count > 0)
+        {
+            GameObject trash = generatedObjectsInLevel[0];
+            generatedObjectsInLevel.Remove(trash);
+            Destroy(trash);
+        }
 
-    void GenerateLevel()
-    {
         for(int x = 0; x < map.width; x++)
         {
             for(int y = 0; y < map.height; y++)
@@ -46,7 +49,7 @@ public class LevelGenerator : MonoBehaviour
                 foreach(GameObject prefab in mapin.prefabs)
                 {
                     GameObject ins = Instantiate(prefab, position, Quaternion.identity, transform);
-                    ObjectPropieties prop = ins.GetComponent<ObjectPropieties>();
+                    Position prop = ins.GetComponent<ObjectPropieties>().pos;
                     prop.xCoord = x;
                     prop.yCoord = y;
                     if (prefab.name == "Player")
@@ -63,12 +66,12 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    public GameObject getObjectCoord(int x, int y)
+    public static GameObject getObjectCoord(int x, int y)
     {
         // Falta optimización
         foreach(GameObject g in generatedObjectsInLevel)
         {
-            if(g.GetComponent<ObjectPropieties>().xCoord == x && g.GetComponent<ObjectPropieties>().yCoord == y)
+            if(g.GetComponent<ObjectPropieties>().pos.xCoord == x && g.GetComponent<ObjectPropieties>().pos.yCoord == y)
             {
                 return g;
             }
