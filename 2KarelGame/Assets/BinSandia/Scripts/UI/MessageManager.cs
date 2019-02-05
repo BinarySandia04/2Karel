@@ -47,8 +47,7 @@ public class MessageManager : MonoBehaviour
     [SerializeField]
     public static List<KMessage> _messageQueue = new List<KMessage>();
 
-    public static class MsgManager
-    {
+    
         public static void MakeAMessage(string messagetext)
         {
             _messageQueue.Add(new KMessage(messagetext));
@@ -64,7 +63,6 @@ public class MessageManager : MonoBehaviour
             _messageQueue.Add(new KMessage(messagetext, messageColor, messageTime));
         }
 
-    }
 
     void Awake()
     {
@@ -73,8 +71,8 @@ public class MessageManager : MonoBehaviour
 
     void Start()
     {
-        MsgManager.MakeAMessage("Dolor ipsum tie aemet!", Color.red, 10f);
-        MsgManager.MakeAMessage("Dolor ipsum tie aemet!", Color.green, 50f);
+        // MsgManager.MakeAMessage("Dolor ipsum tie aemet!", Color.red, 10f);
+        // MsgManager.MakeAMessage("Dolor ipsum tie aemet!", Color.green, 50f);
     }
 
     IEnumerator ProcessMessages()

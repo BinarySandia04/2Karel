@@ -17,7 +17,6 @@ public class MenuManagerInGame : MonoBehaviour
     }
 
     public void OpenMenu(string whatMenu){
-        MsgManager.MakeAMessage("Has abierto el menu: " + whatMenu, Color.white, 5f);
         foreach (Transform child in windows.transform) {
             
             GameObject g = child.gameObject;

@@ -536,6 +536,11 @@ public class KarelPlayer : MonoBehaviour
     public string cleanDefinitedString(string code)
     {
         // TODO (mirar linea 200) lol
+        for (int brackets = 1, pos = 0; brackets > 0 && pos != code.Length; pos++)
+        {
+            if (code[pos] == '{') brackets++;
+            if (code[pos] == '}') brackets--;
+        }
         return "kaka";
     }
     private List<int> findSubstr(string str, string find, bool final)

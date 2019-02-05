@@ -2,5 +2,5 @@
 
 public class ObjectPropieties : MonoBehaviour
 {
-    public Position pos;
+    public Position pos = new Position();
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public Texture2D map;
+    public Texture2D generatedMap;
     public ColorMapping[] mappings;
     [Space]
     public GameObject codeEditor;
@@ -18,6 +18,7 @@ public class LevelGenerator : MonoBehaviour
 
     public void GenerateLevel(Texture2D map)
     {
+        generatedMap = map;
         // Clears the level
         while(generatedObjectsInLevel.Count > 0)
         {
@@ -37,7 +38,7 @@ public class LevelGenerator : MonoBehaviour
 
     void GenerateTile(int x, int y)
     {
-        Color pc = map.GetPixel(x, y);
+        Color pc = generatedMap.GetPixel(x, y);
         if (pc.a == 0) return; // Empty
         
         foreach(ColorMapping mapin in mappings)
