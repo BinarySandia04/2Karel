@@ -16,6 +16,16 @@ public class MenuManagerInGame : MonoBehaviour
         StartCoroutine(processUI());
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(processUI());
+    }
+
     public void OpenMenu(string whatMenu){
         foreach (Transform child in windows.transform) {
             
@@ -29,6 +39,26 @@ public class MenuManagerInGame : MonoBehaviour
 
                 if (!imMostrado(g)) addToProcessUI(true, g);
                 
+            }
+        }
+    }
+
+    public void OpenMenuInstant(string whatMenu)
+    {
+        foreach (Transform child in windows.transform)
+        {
+
+            GameObject g = child.gameObject;
+            if (g.name == whatMenu)
+            {
+                if (!imOcultado(g)) GoToInstant(false, g);
+            }
+            else
+            {
+                // Pon en posicion inicial
+
+                if (!imMostrado(g)) GoToInstant(true, g);
+
             }
         }
     }
@@ -107,5 +137,20 @@ public class MenuManagerInGame : MonoBehaviour
             rect.anchoredPosition = new Vector2(0, 0);
         }
         yield return null;
+    }
+
+    void GoToInstant(bool show, GameObject go)
+    {
+        RectTransform rect = go.GetComponent<RectTransform>();
+        if (show)
+        {
+            Debug.Log(rect.anchoredPosition);
+            rect.anchoredPosition = new Vector2(500, 0);
+        }
+        else
+        {
+            Debug.Log(rect.anchoredPosition);
+            rect.anchoredPosition = new Vector2(0, 0);
+        }
     }
 }
