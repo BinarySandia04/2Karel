@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameManager;
 
 public class LevelSelectorButtonManager : MonoBehaviour
 {
@@ -34,6 +35,17 @@ public class LevelSelectorButtonManager : MonoBehaviour
             MessageManager.MakeAMessage(mapName + '\n' + "Difficulty: " + dif, Color.yellow, 3f);
         } else
         {
+            bool noExistsSavedCode = true;
+            foreach(CodeData cd in gameManager.GetComponent<GameManager>().codeData)
+            {
+                if(cd.level == levelId)
+                {
+                    // Importar codigo
+                    gameManager.GetComponent<GameManager>().SetTheCodeCode(cd.code);
+                    noExistsSavedCode = false;
+                }
+            }
+            if(noExistsSavedCode) gameManager.GetComponent<GameManager>().SetTheCodeCode("");
             gameManager.GetComponent<GameManager>().HideMainMenu();
             gameManager.GetComponent<GameManager>().currentLevel = levelId;
             levelManager.GetComponent<LevelGenerator>().GenerateLevel(map);

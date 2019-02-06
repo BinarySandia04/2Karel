@@ -14,11 +14,18 @@ public class GameManager : MonoBehaviour
         // Osea, lo tedioso que son!
     }
 
+    public struct CodeData
+    {
+        public string code;
+        public int level;
+    }
+
     public bool displayedMainMenu = true;
     public int currentLevel = -1;
     [Space]
     [Header("Maps")]
     public List<Map> maps = new List<Map>();
+    public List<CodeData> codeData = new List<CodeData>();
     [Space]
     [Header("Ui elements")]
     public GameObject InGameMenu;
@@ -30,6 +37,16 @@ public class GameManager : MonoBehaviour
     public GameObject ContinueExamplePrefab;
     public GameObject LevelManager;
     public GameObject Canvas;
+
+    public void SetTheCodeCode(string code)
+    {
+        InGameMenu.transform.Find("Right Ingame Menu").Find("Windows").Find("Code").Find("Code Editor").GetComponent<TMP_InputField>().text = code;
+    }
+
+    public string GetTheCodeCode()
+    {
+        return InGameMenu.transform.Find("Right Ingame Menu").Find("Windows").Find("Code").Find("Code Editor").GetComponent<TMP_InputField>().text;
+    }
 
     // Start is called before the first frame update
     void Start()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using static GameManager;
 
 public class ExitToMainMenu : MonoBehaviour
 {
@@ -9,7 +10,30 @@ public class ExitToMainMenu : MonoBehaviour
         {
             if(g.name == "Managers")
             {
+                // Mirar si hay codigo guardado entonces sobreescribir
+                CodeData delete = new CodeData();
+                bool deleting = false;
+                foreach(CodeData gcd in g.transform.Find("Game Manager").GetComponent<GameManager>().codeData)
+                {
+                    if(gcd.level == g.transform.Find("Game Manager").GetComponent<GameManager>().currentLevel)
+                    {
+                        delete = gcd;
+                        deleting = true;
+                    }
+                }
+                if(deleting) g.transform.Find("Game Manager").GetComponent<GameManager>().codeData.Remove(delete);
+                // Añadir el nuevo
+                CodeData cd = new CodeData();
+                cd.code = g.transform.Find("Game Manager").GetComponent<GameManager>().GetTheCodeCode();
+                cd.level = g.transform.Find("Game Manager").GetComponent<GameManager>().currentLevel;
+                g.transform.Find("Game Manager").GetComponent<GameManager>().codeData.Add(cd);
+
                 g.transform.Find("Game Manager").GetComponent<GameManager>().ShowMainMenu();
+                // TODO: Hacer que al salir al menu principal poner el
+                // rectTransform de Content la Y a 0 y del
+                // Scrollbar Vertical el value a 1
+                // De esta manera, al salir el dropdown estara siempre puesto al primer item y el usuario no
+                // tendra que subir. En fin, buenas noches. Estamos a 06/02/2019
                 return;
             }
         }
