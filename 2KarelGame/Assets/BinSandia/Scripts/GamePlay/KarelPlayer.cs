@@ -186,19 +186,29 @@ public class KarelPlayer : MonoBehaviour
         List<Function> funcions = getFunctions(compiledCode); // Tenemos en la lista funcions el contenido de todas las funciones y sus nombres
         // Vamos a comprobar que tenemos la funcion main
         bool isMainHere = false;
+        Function mainFunction = new Function();
         foreach(Function func in funcions)
         {
-            if (func.funcName == "main") isMainHere = true;
-            else
+            if (func.funcName == "main")
             {
-                // Quitar la funcion definida [FUCK IT SE DETECTA DESPUES REMPLAZANDO TODO LO QUE HAY FUERA DE MAIN]
-                compiledCode.Replace(func.funcName + "();", func.funcContent);
+                mainFunction = func;
+                isMainHere = true;
+            }
+        }
+
+        foreach (Function func in funcions)
+        {
+            if (func.funcName != "main")
+            {
+                mainFunction.funcContent = mainFunction.funcContent.Replace(func.funcName + "();", func.funcContent);
             }
         }
         if (!isMainHere) showError("No hay definido un punto de entrada"); // No hay main
         // Ahora hay que limpiar lo que sobra de function main
-        compiledCode = cleanDefinitedString(compiledCode);
+        compiledCode = mainFunction.funcContent;
         // Ahora deberiamos tener la fig(2)
+        Debug.Log(compiledCode);
+        // Hasta aqui todo TESTEADO Y CORRECTO
         // Y me da palo seguir. Esto TODO
     }
 
@@ -508,7 +518,7 @@ public class KarelPlayer : MonoBehaviour
     public List<Function> getFunctions(string code)
     {
         // Ya esta
-        // TODO: Testing intensivo
+        // TODO: Testing intensivo [YA ESTA Y FUNCIONA]
         List<Function> functions = new List<Function>();
         int funcNumber = Regex.Matches(code, "function").Count;
         int pointing = 0;
@@ -519,7 +529,7 @@ public class KarelPlayer : MonoBehaviour
             // main(){move();repeat(3){move();]exit();} [EJEMPLO]
             int firstPoint;
             for (firstPoint = pointing; code[pointing] != '(' && pointing != code.Length; pointing++) { }
-            finalFunc.funcName = substrWithInt(code, firstPoint, pointing - 1);
+            finalFunc.funcName = substrWithInt(code, firstPoint + 8, pointing - 1);
             pointing += 4; // Principio de funcion
             // Ahora incluir hasta final de funcion
             firstPoint = pointing;
@@ -528,20 +538,11 @@ public class KarelPlayer : MonoBehaviour
                 if (code[pointing] == '{') brackets++;
                 if (code[pointing] == '}') brackets--;
             }
-            finalFunc.funcContent = substrWithInt(code, firstPoint, pointing - 1);
+            finalFunc.funcContent = substrWithInt(code, firstPoint - 1, pointing - 2);
             functions.Add(finalFunc);
         }
+        
         return functions;
-    }
-    public string cleanDefinitedString(string code)
-    {
-        // TODO (mirar linea 200) lol
-        for (int brackets = 1, pos = 0; brackets > 0 && pos != code.Length; pos++)
-        {
-            if (code[pos] == '{') brackets++;
-            if (code[pos] == '}') brackets--;
-        }
-        return "kaka";
     }
     private List<int> findSubstr(string str, string find, bool final)
     {

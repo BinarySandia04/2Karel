@@ -121,7 +121,6 @@ public class CodeRendering : MonoBehaviour
             string before = input.text.Substring(0, input.stringPosition) + new string(' ', howManySpaces);
             string after = "";
             after = input.text.Substring(input.stringPosition, input.text.Length - (input.stringPosition));
-            Debug.Log(after);
             input.text = before + after;
             input.stringPosition += howManySpaces;
         }
