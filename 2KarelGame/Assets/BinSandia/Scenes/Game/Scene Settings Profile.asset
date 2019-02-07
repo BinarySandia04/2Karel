@@ -18,6 +18,9 @@ MonoBehaviour:
   - {fileID: 114255279081977188}
   - {fileID: 114396374212546542}
   - {fileID: 114648245863138190}
+  - {fileID: 114797987462508708}
+  - {fileID: 114396611371219276}
+  - {fileID: 114789613407119936}
 --- !u!114 &114255279081977188
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -41,7 +44,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 0.12
+    m_Value: 1
   multiplier:
     m_OverrideState: 1
     m_Value: 1
@@ -65,7 +68,7 @@ MonoBehaviour:
     m_Value: 1
   sunSize:
     m_OverrideState: 1
-    m_Value: 0.016
+    m_Value: 0.19
     min: 0
     max: 1
   sunSizeConvergence:
@@ -149,6 +152,45 @@ MonoBehaviour:
     m_Value: 0.2
     min: 0
     max: 1
+--- !u!114 &114396611371219276
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384c4d03a551c44448145f4093304119, type: 3}
+  m_Name: ScreenSpaceReflection
+  m_EditorClassIdentifier: 
+  active: 1
+  depthBufferThickness:
+    m_OverrideState: 1
+    m_Value: 0.01
+    min: 0
+    max: 1
+  screenFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0.1
+    min: 0
+    max: 1
+  minSmoothness:
+    m_OverrideState: 1
+    m_Value: 0.9
+    min: 0
+    max: 1
+  smoothnessFadeStart:
+    m_OverrideState: 1
+    m_Value: 0.9
+    min: 0
+    max: 1
+  reflectSky:
+    m_OverrideState: 1
+    m_Value: 1
+  rayMaxIterations:
+    m_OverrideState: 1
+    m_Value: 32
 --- !u!114 &114648245863138190
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -202,7 +244,7 @@ MonoBehaviour:
     showEyeDropper: 1
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0.012613035, b: 0.044811323, a: 1}
+    m_Value: {r: 0, g: 0.023529412, b: 0.08627451, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -234,6 +276,66 @@ MonoBehaviour:
   fogType:
     m_OverrideState: 1
     m_Value: 2
+--- !u!114 &114789613407119936
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e17fad69ea181b4483974138b566975, type: 3}
+  m_Name: ScreenSpaceRefraction
+  m_EditorClassIdentifier: 
+  active: 1
+  screenFadeDistance:
+    m_OverrideState: 1
+    m_Value: 0.1
+    min: 0.001
+    max: 1
+--- !u!114 &114797987462508708
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f034cba68ab55e046ae1445a42f18c0e, type: 3}
+  m_Name: IndirectLightingController
+  m_EditorClassIdentifier: 
+  active: 1
+  indirectSpecularIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
+  indirectDiffuseIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
+--- !u!114 &114868744637825218
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f034cba68ab55e046ae1445a42f18c0e, type: 3}
+  m_Name: IndirectLightingController
+  m_EditorClassIdentifier: 
+  active: 1
+  indirectSpecularIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+  indirectDiffuseIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
 --- !u!114 &114886395376620292
 MonoBehaviour:
   m_ObjectHideFlags: 3

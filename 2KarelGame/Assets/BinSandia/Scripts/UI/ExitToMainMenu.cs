@@ -30,8 +30,10 @@ public class ExitToMainMenu : MonoBehaviour
 
                 g.transform.Find("Game Manager").GetComponent<GameManager>().ShowMainMenu();
                 // TODO: Hacer que al salir al menu principal poner el
+                g.transform.Find("Game Manager").GetComponent<GameManager>().Content.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
                 // rectTransform de Content la Y a 0 y del
                 // Scrollbar Vertical el value a 1
+                g.transform.Find("Game Manager").GetComponent<GameManager>().scroll.value = 1;
                 // De esta manera, al salir el dropdown estara siempre puesto al primer item y el usuario no
                 // tendra que subir. En fin, buenas noches. Estamos a 06/02/2019
                 return;

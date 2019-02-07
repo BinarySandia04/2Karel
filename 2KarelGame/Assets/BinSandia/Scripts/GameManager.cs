@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     [Space]
     public GameObject MainMenu;
     public GameObject Content;
+    public Scrollbar scroll;
     public GameObject LevelExamplePrefab;
     public GameObject ContinueExamplePrefab;
     public GameObject LevelManager;
