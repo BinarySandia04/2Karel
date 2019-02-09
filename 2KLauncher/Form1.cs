@@ -68,21 +68,21 @@ namespace _2KLauncher
         void DownloadGame()
         {
             // Intenta borrar juego
-            try { Directory.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame"); } catch (Exception) { }
+            try { Directory.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory() + "2KarelGame"))); } catch (Exception) { }
 
             changeFormTitle("2Karel Launcher - Downloading");
             using (WebClient wc = new WebClient())
             {
                 wc.DownloadProgressChanged += download_progressChanged;
                 wc.DownloadFileCompleted += download_completed;
-                wc.DownloadFileAsync(new Uri("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KG.zip"), Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip");
+                wc.DownloadFileAsync(new Uri("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KG.zip"), Path.GetFullPath(Directory.GetCurrentDirectory() + "/2KG.zip"));
             }
         }
 
         private void download_completed(object sender, AsyncCompletedEventArgs e)
         {
             // Cosas
-            if(File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
+            if(File.Exists(Path.GetFullPath(Directory.GetCurrentDirectory()) + "/2KG.zip"))
             {
                 changeDownloadBarPercentage1(100);
                 changeDownloadText1("100%");
@@ -110,7 +110,7 @@ namespace _2KLauncher
             using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KG.zip"))
             {
                 zip.ExtractProgress += install_progress;
-                zip.ExtractAll(Path.GetFullPath(Directory.GetCurrentDirectory()), ExtractExistingFileAction.OverwriteSilently);
+                zip.ExtractAll(Path.GetFullPath(Directory.GetCurrentDirectory() + "2KarelGame"), ExtractExistingFileAction.OverwriteSilently);
                 
                 totalFiles = zip.Count;
             }
@@ -159,9 +159,9 @@ namespace _2KLauncher
         void LaunchGame()
         {
             MessageBox.Show("Abriendo juego...");
-            if (File.Exists(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2Karel.exe"))
+            if (File.Exists(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KarelGame/2Karel.exe"))
             {
-                Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2Karel.exe");
+                Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KarelGame/2Karel.exe");
                 Environment.Exit(1);
             }
             else
