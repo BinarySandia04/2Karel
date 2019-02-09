@@ -300,7 +300,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:2KSetup"
         "ProductCode" = "8:{9D707D8D-BFDB-405E-9E47-006152B6677C}"
-        "PackageCode" = "8:{21E7AFEA-7370-4E70-B13E-C348E144FAA0}"
+        "PackageCode" = "8:{E58BC5F7-A594-434D-AEFE-06F0C627BB9F}"
         "UpgradeCode" = "8:{AE8416EC-21CE-4906-9A59-3D01BB8087C3}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -431,7 +431,7 @@
             "Target" = "8:_C3F9028ED12F43C89D17E397F7667782"
             "Folder" = "8:_E0B4A8E695F440CD9F87CEA4D991BFE6"
             "WorkingFolder" = "8:_E7AD0345AC36455B96095C0436C28F0E"
-            "Icon" = "8:"
+            "Icon" = "8:_26E56FE78E884247AA2564B2A4209CD8"
             "Feature" = "8:"
             }
         }
