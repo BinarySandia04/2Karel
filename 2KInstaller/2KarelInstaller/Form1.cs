@@ -49,14 +49,10 @@ namespace _2KarelInstaller
                 if(actualVersion != newVersion || firstTime)
                 {
                     label1.Text = "Updating native launcher...";
-                    string path = Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KLauncher";
-                    if (!Directory.Exists(path))
-                    {
-                        MessageBox.Show("No se puede instalar el launcher. Faltan archivos. Prueba de reinstalar el programa", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    
                         try
                     {
-                        DownloadAsyncLauncher("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KLauncher.exe", Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KLauncher.exe");
+                        DownloadAsyncLauncher("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KLauncher.exe", Path.GetFullPath(Directory.GetCurrentDirectory()) + "/2KLauncher.exe");
                     }
                     catch (Exception)
                     {
@@ -67,7 +63,6 @@ namespace _2KarelInstaller
                 {
                     label1.Text = "Up to date";
                     // Ejecutar launcher
-                    AfterInstallationComprobation();
                     StartLauncher();
                 }
                 
@@ -105,18 +100,8 @@ namespace _2KarelInstaller
 
         void StartLauncher()
         {
-            System.Diagnostics.Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KLauncher.exe");
+            System.Diagnostics.Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory()) + "/2KLauncher.exe");
             Environment.Exit(0);
-        }
-
-        public void AfterInstallationComprobation()
-        {
-            string path = Path.GetFullPath(Directory.GetCurrentDirectory() + "2KLauncher");
-            if (!Directory.Exists(path))
-            {
-                MessageBox.Show("La instalacion del launcher se ha corrompido/borrado/movido. No se puede ejecutar. Para solucionar el error, vuelve a abrir este archivo.exe, y si no funciona, ponte en contacto conmigo!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(0);
-            }
         }
 
         private void DownloadAndWait(string ur, string path)
