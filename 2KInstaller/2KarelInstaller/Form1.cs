@@ -14,8 +14,8 @@ namespace _2KarelInstaller
         public string verxml = Path.GetFullPath(Directory.GetCurrentDirectory()) + "newversions.xml";
         public Form1()
         {
-            app.InitializeComponent();
-            app.InitializeApplication();
+            InitializeComponent();
+            InitializeApplication();
         }
 
         private string readVersion(){
