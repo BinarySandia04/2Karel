@@ -9,6 +9,8 @@ public class KarelPlayer : MonoBehaviour
     // Ok aqui estan todos los bools de condiciones que el usuario puede conseguir escribiendo su codigo
     [HideInInspector]
     public GameObject levelGenerator;
+    [HideInInspector]
+    public static CompilingPropieties CurrentCompilingPropieties;
     [Header("Exit")]
     [Space]
     [Header("Realtime propieties")] // Ironico pero no se porque en el inspector se intercanvian xd
@@ -54,6 +56,13 @@ public class KarelPlayer : MonoBehaviour
         South,
         East,
         West
+    }
+
+    // TODO: Mover estos structs a otro sitio para estar ordenado
+    [System.Serializable]
+    public struct CompilingPropieties
+    {
+        public int recursiveFunctionCheckLimit;
     }
 
     public struct Function
@@ -178,6 +187,12 @@ public class KarelPlayer : MonoBehaviour
          *  --------- FIN DE UN LARGO COMENTARIO --------------------------------------------------------
          */
 
+        if(CurrentCompilingPropieties.Equals(default(CompilingPropieties)))
+        {
+            Debug.LogWarning("No se han definido las opciones de compilacion");
+            return;
+        }
+
         // Paso 1 - quitar espacios i saltos de linea
         string compiledCode = removeSpaces(bufferCode); // Tenemos el codigo sin espacios
         // Comprobar gramatica
@@ -196,13 +211,24 @@ public class KarelPlayer : MonoBehaviour
             }
         }
 
+        for(int i = 0; i < CurrentCompilingPropieties.recursiveFunctionCheckLimit; i++)
+        {
+            foreach (Function func in funcions)
+            {
+                if (func.funcName != "main")
+                {
+                    mainFunction.funcContent = mainFunction.funcContent.Replace(func.funcName + "();", func.funcContent);
+                }
+            }
+        }
         foreach (Function func in funcions)
         {
             if (func.funcName != "main")
             {
-                mainFunction.funcContent = mainFunction.funcContent.Replace(func.funcName + "();", func.funcContent);
+                mainFunction.funcContent = mainFunction.funcContent.Replace(func.funcName + "();", "###ERROR##ENDOFRECURSIVEFUNC###");
             }
         }
+
         if (!isMainHere) showError("No hay definido un punto de entrada"); // No hay main
         // Ahora hay que limpiar lo que sobra de function main
         compiledCode = mainFunction.funcContent;

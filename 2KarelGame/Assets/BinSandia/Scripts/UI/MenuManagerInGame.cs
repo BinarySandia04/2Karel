@@ -125,7 +125,6 @@ public class MenuManagerInGame : MonoBehaviour
         }
         else
         {
-            Debug.Log(rect.anchoredPosition);
             // EMPIEZA: rect.left = 500, rect.right = 0;
             // ACABA:   rect.left = 0, rect.right = 0;
             for (int i = 500; i > 0; i--)

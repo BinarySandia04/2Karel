@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
         public string name;
         public float difficulty; // En plan osu, de 1 a 10. Sin tener en cuenta cosas de GamePlay
         // Osea, lo tedioso que son!
+        public int mapId; // Id que identifica el mapa
+        public KarelPlayer.CompilingPropieties mapCompilingPropieties; // Propiedades al compilar codigo en el mapa
     }
 
     public struct CodeData
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     public bool displayedMainMenu = true;
     public int currentLevel = -1;
+    public Map currentLevelMap;
     [Space]
     [Header("Maps")]
     public List<Map> maps = new List<Map>();
@@ -75,6 +78,21 @@ public class GameManager : MonoBehaviour
         displayedMainMenu = true;
     }
 
+    public Map getMap(int orderNumber)
+    {
+        return maps[orderNumber];
+    }
+
+    // Se acepta optimizacion
+    public Map getMapById(int id)
+    {
+        foreach(Map map in maps)
+        {
+            if (map.mapId == id) return map;
+        }
+        return new Map();
+    }
+
     public void MakeGameMenu()
     {
         GameObject inGameMenu = Instantiate(InGameMenu);
@@ -117,14 +135,15 @@ public class GameManager : MonoBehaviour
                 lBut.transform.Find("LevelText").GetComponent<TextMeshProUGUI>().text = "Continue";
                 lBut.transform.Find("LevelDiff").GetComponent<TextMeshProUGUI>().text = map.name + " | Difficulty: " + map.difficulty;
                 lBut.isContinueTarget = true;
-                lBut.levelManager = LevelManager;
-                lBut.gameManager = gameObject;
+                lBut.levelManager = LevelManager.GetComponent<LevelGenerator>();
+                lBut.gameManager = this;
             }
             levelToHighLight++;
         }
 
         levelToHighLight = 0;
         // Ya los demas
+        Map finalMap;
         foreach(Map map in maps)
         {
             // TODO: Boton de continuar
@@ -133,15 +152,12 @@ public class GameManager : MonoBehaviour
                 newButton.transform.SetParent(Content.transform);
                 LevelSelectorButtonManager lBut = newButton.GetComponent<LevelSelectorButtonManager>();
                 // Asignar cosas que hacen los botones a los botones que se crean a partir de botones
+                finalMap = map;
+                finalMap.mapId = levelToHighLight;
+                lBut.map = finalMap;
 
-                lBut.dif = map.difficulty;
-                lBut.map = map.mapPng;
-                lBut.mapName = map.name;
-                lBut.png = map.mapSprite;
-
-                lBut.levelManager = LevelManager;
-                lBut.gameManager = gameObject;
-                lBut.levelId = levelToHighLight;
+                lBut.levelManager = LevelManager.GetComponent<LevelGenerator>();
+                lBut.gameManager = this;
                 lBut.isContinueTarget = false;
 
                 lBut.generateUI();

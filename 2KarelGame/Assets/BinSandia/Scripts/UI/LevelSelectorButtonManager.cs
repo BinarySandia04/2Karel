@@ -5,51 +5,57 @@ using static GameManager;
 
 public class LevelSelectorButtonManager : MonoBehaviour
 {
-    public GameObject levelManager;
-    public GameObject gameManager;
+    public LevelGenerator levelManager;
+    public GameManager gameManager;
     public GameObject messageManager;
     [Space]
-    public string mapName;
-    public Sprite png;
-    public float dif;
-    public Texture2D map;
-    public int levelId;
+    public Map map;
     [Space]
     public bool isContinueTarget;
     public string cacheCode; // TODO: Al cargar otro nivel, hacer que el codigo guardado de la ultima sesion
     // sea el que abandono el usuario antes. Facil xd
 
+    // PD: El Pau Pedrals m'ha dit que aixó optimitza.
+    Transform trans;
+
+    void Awake()
+    {
+        trans = transform;
+    }
+    // TODO: Soluciona este caos porfavor!
     public void generateUI()
     {
-        transform.Find("LevelText").GetComponent<TextMeshProUGUI>().text = mapName;
-        transform.Find("LevelDiff").GetComponent<TextMeshProUGUI>().text = "Difficulty: " + dif;
-        transform.Find("Image").GetComponent<Image>().sprite = png;
+        trans.Find("LevelText").GetComponent<TextMeshProUGUI>().text = map.name;
+        trans.Find("LevelDiff").GetComponent<TextMeshProUGUI>().text = "Difficulty: " + map.difficulty;
+        trans.Find("Image").GetComponent<Image>().sprite = map.mapSprite;
     }
 
     public void StartLevel()
     {
         if (isContinueTarget)
         {
-            gameManager.GetComponent<GameManager>().HideMainMenu();
-            gameManager.GetComponent<GameManager>().currentLevel = levelId;
-            MessageManager.MakeAMessage(mapName + '\n' + "Difficulty: " + dif, Color.yellow, 3f);
+            gameManager.HideMainMenu();
+            gameManager.currentLevelMap = map;
+
+            MessageManager.MakeAMessage(map.name + '\n' + "Difficulty: " + map.difficulty, Color.yellow, 3f);
         } else
         {
             bool noExistsSavedCode = true;
-            foreach(CodeData cd in gameManager.GetComponent<GameManager>().codeData)
+            foreach(CodeData cd in gameManager.codeData)
             {
-                if(cd.level == levelId)
+                if(cd.level == map.mapId)
                 {
                     // Importar codigo
-                    gameManager.GetComponent<GameManager>().SetTheCodeCode(cd.code);
+                    gameManager.SetTheCodeCode(cd.code);
                     noExistsSavedCode = false;
                 }
             }
-            if(noExistsSavedCode) gameManager.GetComponent<GameManager>().SetTheCodeCode("");
-            gameManager.GetComponent<GameManager>().HideMainMenu();
-            gameManager.GetComponent<GameManager>().currentLevel = levelId;
-            levelManager.GetComponent<LevelGenerator>().GenerateLevel(map);
-            MessageManager.MakeAMessage(mapName + '\n' + "Difficulty: " + dif, Color.yellow, 3f);
+            if(noExistsSavedCode) gameManager.SetTheCodeCode("");
+            gameManager.HideMainMenu();
+            gameManager.currentLevel = map.mapId;
+            KarelPlayer.CurrentCompilingPropieties = map.mapCompilingPropieties;
+            levelManager.GenerateLevel(map.mapPng);
+            MessageManager.MakeAMessage(map.name + '\n' + "Difficulty: " + map.difficulty, Color.yellow, 3f);
         }
     }
 }
