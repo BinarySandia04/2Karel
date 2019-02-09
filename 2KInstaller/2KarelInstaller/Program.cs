@@ -15,8 +15,6 @@ namespace _2KarelInstaller
             Application.SetCompatibleTextRenderingDefault(false);
             Form1 app = new Form1();
             Application.Run(app);
-            app.InitializeComponent();
-            app.InitializeApplication();
         }
         
 

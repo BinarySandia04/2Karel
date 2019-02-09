@@ -12,7 +12,11 @@ namespace _2KarelInstaller
     {
         public string dir = Directory.GetCurrentDirectory();
         public string verxml = Path.GetFullPath(Directory.GetCurrentDirectory()) + "newversions.xml";
-        public Form1() { }
+        public Form1()
+        {
+            app.InitializeComponent();
+            app.InitializeApplication();
+        }
 
         private string readVersion(){
             XmlDocument doc = new XmlDocument();
