@@ -55,11 +55,14 @@ public class LevelGenerator : MonoBehaviour
                     prop.yCoord = y;
                     if (prefab.name == "Player")
                     {
-                        codeEditor.GetComponent<CodeRendering>().player = ins;
+                        CodeRendering cr = codeEditor.GetComponent<CodeRendering>();
+                        cr.player = ins;
                         // El player lleva un KarelPlayer puesto ya en el prefab,
                         // Y ahora assignamos al gameobject KarelPlayer que sea capaz de acceder a este script
                         // y usar la funcion getObjectCoord
-                        ins.GetComponent<KarelPlayer>().levelGenerator = gameObject;
+                        KarelPlayer kp = prefab.GetComponent<KarelPlayer>();
+                        kp.levelGenerator = this;
+                        kp.reservedWordList = cr.WordList;
                     }
                     generatedObjectsInLevel.Add(ins);
                 }

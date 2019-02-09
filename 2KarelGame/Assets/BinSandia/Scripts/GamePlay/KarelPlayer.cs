@@ -1,16 +1,24 @@
 ﻿// IN PROGRESS
 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class KarelPlayer : MonoBehaviour
 {
-    // Ok aqui estan todos los bools de condiciones que el usuario puede conseguir escribiendo su codigo
     [HideInInspector]
-    public GameObject levelGenerator;
+    public KarelWordList reservedWordList;
+    [HideInInspector]
+    public LevelGenerator levelGenerator;
     [HideInInspector]
     public static CompilingPropieties CurrentCompilingPropieties;
+
+    // ERROR HANDLING
+    private string _errorMessage;
+    private bool _triggeredError;
+
+    // Ok aqui estan todos los bools de condiciones que el usuario puede conseguir escribiendo su codigo
     [Header("Exit")]
     [Space]
     [Header("Realtime propieties")] // Ironico pero no se porque en el inspector se intercanvian xd
@@ -89,6 +97,7 @@ public class KarelPlayer : MonoBehaviour
 
     public void translateCode()
     {
+        _triggeredError = false;
         /*
          * --------------- INICIO DE UN LARGO COMENTARIO ---------------------------
          * Esta es la main function que convierte todo lo que hay en buffer code directamente ya a los
@@ -200,6 +209,8 @@ public class KarelPlayer : MonoBehaviour
         // Paso 2 - definir functiones
         List<Function> funcions = getFunctions(compiledCode); // Tenemos en la lista funcions el contenido de todas las funciones y sus nombres
         // Vamos a comprobar que tenemos la funcion main
+        // Antes vamos a ver si tenemos errores!
+        checkForErrors();
         bool isMainHere = false;
         Function mainFunction = new Function();
         foreach(Function func in funcions)
@@ -229,13 +240,32 @@ public class KarelPlayer : MonoBehaviour
             }
         }
 
-        if (!isMainHere) showError("No hay definido un punto de entrada"); // No hay main
+        if (!isMainHere)
+        {
+            _errorMessage = "No hay definido un punto de entrada";
+            _triggeredError = true;
+        }
         // Ahora hay que limpiar lo que sobra de function main
         compiledCode = mainFunction.funcContent;
         // Ahora deberiamos tener la fig(2)
         Debug.Log(compiledCode);
         // Hasta aqui todo TESTEADO Y CORRECTO
         // Y me da palo seguir. Esto TODO
+
+        // Final: Mirar si hay errores:
+        checkForErrors();
+    }
+
+    private bool checkForErrors()
+    {
+        if (_triggeredError)
+        {
+            MessageManager.MakeAMessage("ERROR: " + _errorMessage, Color.red, 3);
+            Debug.LogError(_errorMessage);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // ALERTA: Funcion bastante larga y aburrida
@@ -554,8 +584,29 @@ public class KarelPlayer : MonoBehaviour
             Function finalFunc = new Function();
             // main(){move();repeat(3){move();]exit();} [EJEMPLO]
             int firstPoint;
-            for (firstPoint = pointing; code[pointing] != '(' && pointing != code.Length; pointing++) { }
-            finalFunc.funcName = substrWithInt(code, firstPoint + 8, pointing - 1);
+            try
+            {
+                for (firstPoint = pointing; code[pointing] != '(' && pointing != code.Length; pointing++) { }
+            }
+            catch (Exception)
+            {
+                _errorMessage = "Funciones no definidas correctamente. Estan bien escritas?";
+                _triggeredError = true;
+                return null;
+            }
+            
+            string finalFuncName = substrWithInt(code, firstPoint + 8, pointing - 1);
+            if (isReservedWord(finalFuncName))
+            {
+                // ERROR: Hay una funcion definida como una palabra reservada.
+                _errorMessage = "Hay una funcion definida como una palabra reservada";
+                _triggeredError = true;
+                return null;
+            }
+            else
+            {
+                finalFunc.funcName = finalFuncName;
+            }
             pointing += 4; // Principio de funcion
             // Ahora incluir hasta final de funcion
             firstPoint = pointing;
@@ -570,6 +621,17 @@ public class KarelPlayer : MonoBehaviour
         
         return functions;
     }
+
+    // Se aceptan optimizaciones
+    private bool isReservedWord(string finalFuncName)
+    {
+        foreach(KarelWordList.Sentence sen in reservedWordList.wordList)
+        {
+            if (sen.word == finalFuncName && sen.word != "main") return true;
+        }
+        return false;
+    }
+
     private List<int> findSubstr(string str, string find, bool final)
     {
         List<int> positions = new List<int>();
@@ -589,11 +651,5 @@ public class KarelPlayer : MonoBehaviour
         if (start >= end) return res;
         for (; start <= end; start++) res += str[start];
         return res;
-    }
-
-    // Exception handling
-    public void showError(string er)
-    {
-        Debug.Log("[ERROR EN CODIGO USUARIO]: " + er);
     }
 }

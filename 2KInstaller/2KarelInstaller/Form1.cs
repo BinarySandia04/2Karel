@@ -11,12 +11,8 @@ namespace _2KarelInstaller
     public partial class Form1 : Form
     {
         public string dir = Directory.GetCurrentDirectory();
-        public string verxml = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "newversions.xml";
-        public Form1()
-        {
-            InitializeComponent();
-            InitializeApplication();
-        }
+        public string verxml = Path.GetFullPath(Directory.GetCurrentDirectory()) + "newversions.xml";
+        public Form1() { }
 
         private string readVersion(){
             XmlDocument doc = new XmlDocument();
@@ -25,7 +21,7 @@ namespace _2KarelInstaller
             return node.InnerText;
         }
 
-        private void InitializeApplication()
+        public void InitializeApplication()
         {
 
             label1.Text = "Checking for launcher updates...";
@@ -50,14 +46,14 @@ namespace _2KarelInstaller
                 if(actualVersion != newVersion || firstTime)
                 {
                     label1.Text = "Updating native launcher...";
-                    string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher";
+                    string path = Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KLauncher";
                     if (!Directory.Exists(path))
                     {
                         MessageBox.Show("No se puede instalar el launcher. Faltan archivos. Prueba de reinstalar el programa", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                         try
                     {
-                        DownloadAsyncLauncher("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KLauncher.exe", Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher/2KLauncher.exe");
+                        DownloadAsyncLauncher("https://github.com/BinarySandia04/2Karel/raw/master/Releases/2KLauncher.exe", Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KLauncher.exe");
                     }
                     catch (Exception)
                     {
@@ -106,13 +102,13 @@ namespace _2KarelInstaller
 
         void StartLauncher()
         {
-            System.Diagnostics.Process.Start(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher/2KLauncher.exe");
+            System.Diagnostics.Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KLauncher.exe");
             Environment.Exit(0);
         }
 
         public void AfterInstallationComprobation()
         {
-            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KLauncher";
+            string path = Path.GetFullPath(Directory.GetCurrentDirectory() + "2KLauncher");
             if (!Directory.Exists(path))
             {
                 MessageBox.Show("La instalacion del launcher se ha corrompido/borrado/movido. No se puede ejecutar. Para solucionar el error, vuelve a abrir este archivo.exe, y si no funciona, ponte en contacto conmigo!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -124,7 +120,7 @@ namespace _2KarelInstaller
         {
             string fullPath = Path.GetFullPath(Directory.GetCurrentDirectory()).TrimEnd(Path.DirectorySeparatorChar);
             string[] projectName = fullPath.Split(Path.DirectorySeparatorChar);
-            if (projectName[projectName.Length - 2] != "2Karel" || projectName[projectName.Length - 1] != "2KInstaller")
+            if (projectName[projectName.Length - 1] != "2Karel")
             {
                 MessageBox.Show("La carpeta de instalación no és la correcta. Intenta reinstalar el programa o comprueba que se encuentre dentro de la carpeta .../2Karel/2KInstaller/2KarelInstaller.exe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);

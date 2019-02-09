@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     public void ShowMainMenu()
     {
         LevelManager.GetComponent<LevelGenerator>().codeEditor = InGameMenu.transform.Find("Right Ingame Menu").Find("Windows").Find("Code").Find("Code Editor").gameObject;
+        // OPTIMIZAR
         AddLevelMaps();
         MainMenu.SetActive(true);
         InGameMenu.SetActive(false);
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour
         ClearLevelMaps();
 
         int levelToHighLight = 0;
-
+        // HAY QUE OPTIMIZAR ESTO! UNITY PASA DEMASIADO RATO AQUI!
         // Poner primero el continuar
         foreach(Map map in maps)
         {

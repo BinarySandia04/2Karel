@@ -186,7 +186,7 @@
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_F48186C033D0492F957922FC1102B00D"
+            "Folder" = "8:_E7AD0345AC36455B96095C0436C28F0E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -217,7 +217,7 @@
             "SourcePath" = "8:..\\..\\2KLauncher\\Ionic.Zip.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_F46AB2EDFB4342AC98130DCD3B884E71"
+            "Folder" = "8:_E7AD0345AC36455B96095C0436C28F0E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -257,28 +257,6 @@
                     "Property" = "8:_7432C8C744D14C2686F135A4897C15E2"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_F46AB2EDFB4342AC98130DCD3B884E71"
-                            {
-                            "Name" = "8:2KLauncher"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_5674ADBA06404F97B242337C35759E37"
-                                "Folders"
-                                {
-                                }
-                            }
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_F48186C033D0492F957922FC1102B00D"
-                            {
-                            "Name" = "8:2KInstaller"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_DECFCCB821684D31844A414A41C32795"
-                                "Folders"
-                                {
-                                }
-                            }
                         }
                     }
                 }
@@ -452,7 +430,7 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_C3F9028ED12F43C89D17E397F7667782"
             "Folder" = "8:_E0B4A8E695F440CD9F87CEA4D991BFE6"
-            "WorkingFolder" = "8:_F48186C033D0492F957922FC1102B00D"
+            "WorkingFolder" = "8:"
             "Icon" = "8:_26E56FE78E884247AA2564B2A4209CD8"
             "Feature" = "8:"
             }
@@ -825,7 +803,7 @@
             "SourcePath" = "8:..\\2KarelInstaller\\obj\\Debug\\2KarelInstaller.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_F48186C033D0492F957922FC1102B00D"
+            "Folder" = "8:_E7AD0345AC36455B96095C0436C28F0E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

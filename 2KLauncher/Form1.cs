@@ -107,10 +107,10 @@ namespace _2KLauncher
         {
             /*...*/
             changeFormTitle("2Karel Launcher - Installing");
-            using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KG.zip"))
+            using (ZipFile zip = ZipFile.Read(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KG.zip"))
             {
                 zip.ExtractProgress += install_progress;
-                zip.ExtractAll(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "/2KarelGame/", ExtractExistingFileAction.OverwriteSilently);
+                zip.ExtractAll(Path.GetFullPath(Directory.GetCurrentDirectory()), ExtractExistingFileAction.OverwriteSilently);
                 
                 totalFiles = zip.Count;
             }
@@ -136,7 +136,7 @@ namespace _2KLauncher
             LaunchGame();
         }
 
-        void CheckForUpdates()
+        public void CheckForUpdates()
         {
             changeFormTitle("2Karel Launcher");
             changeDownloadMessage("Downloading 2Karel...");
@@ -159,9 +159,9 @@ namespace _2KLauncher
         void LaunchGame()
         {
             MessageBox.Show("Abriendo juego...");
-            if (File.Exists(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame/2Karel.exe"))
+            if (File.Exists(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2Karel.exe"))
             {
-                Process.Start(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame/2Karel.exe");
+                Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2Karel.exe");
                 Environment.Exit(1);
             }
             else
@@ -170,9 +170,9 @@ namespace _2KLauncher
                 {
                     try
                     {
-                        File.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "versions.xml");
-                        File.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "newversions.xml");
-                        Directory.Delete(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\")) + "2KarelGame"); // Carpeta juego
+                        File.Delete(Path.GetFullPath(Directory.GetCurrentDirectory()) + "versions.xml");
+                        File.Delete(Path.GetFullPath(Directory.GetCurrentDirectory()) + "newversions.xml");
+                        Directory.Delete(Path.GetFullPath(Directory.GetCurrentDirectory()) + "2KarelGame"); // Carpeta juego
                     }
                     catch (Exception)
                     { }
