@@ -46,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A2E73CC23DD843B79E0C03BBD69A6D2E"
+        "OwnerKey" = "8:_5902F240D47CA94D148F50B98032935E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5902F240D47CA94D148F50B98032935E"
+        "OwnerKey" = "8:_A2E73CC23DD843B79E0C03BBD69A6D2E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -177,11 +177,6 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_5902F240D47CA94D148F50B98032935E"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -240,7 +235,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_A94609152D3642769A7D63A7FE195DEF"
             {
-            "DefaultLocation" = "8:[AppDataFolder]"
+            "DefaultLocation" = "8:[ProgramFilesFolder]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
