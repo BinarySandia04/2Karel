@@ -14,6 +14,7 @@ public class CodeRendering : MonoBehaviour
     private int lines = 0;
     public KarelWordList WordList;
     public GameObject resizer;
+    public GameObject lineNumber;
     private TMP_InputField input;
     private List<List<int>> coloredWordsInfo = new List<List<int>>(); // First int, PURE WORD location start, second one, end
     private List<int> spacingInfo = new List<int>(); // Int with the numbers of spaces required every line!
@@ -266,6 +267,7 @@ public class CodeRendering : MonoBehaviour
         {
             if (Input.anyKey)
             {
+                UpdateLineCount();
                 UpdateHeight();
                 if (input.selectionAnchorPosition != input.selectionFocusPosition)
                 {
@@ -328,7 +330,18 @@ public class CodeRendering : MonoBehaviour
             }
         }
     }
-    
+
+    private void UpdateLineCount()
+    {
+        int lines = getLines() + 1;
+        string text = "";
+        for(int i = 0; i < lines; i++)
+        {
+            text += (i + "\n");
+        }
+        lineNumber.GetComponent<TextMeshProUGUI>().text = text;
+    }
+
     // Enable and disable color rendering
     public void EnableColorRendering()
     {

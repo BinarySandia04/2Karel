@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class KarelPlayer : MonoBehaviour
 {
-    [HideInInspector]
     public KarelWordList reservedWordList;
     [HideInInspector]
     public LevelGenerator levelGenerator;
@@ -95,6 +94,7 @@ public class KarelPlayer : MonoBehaviour
     [Space]
     public Orientation or = Orientation.North;
 
+    // 0.8 ms en [i5-6400 | GTX 950 | 8GB Ram | Unity Editor]
     public void translateCode()
     {
         _triggeredError = false;
@@ -248,12 +248,64 @@ public class KarelPlayer : MonoBehaviour
         // Ahora hay que limpiar lo que sobra de function main
         compiledCode = mainFunction.funcContent;
         // Ahora deberiamos tener la fig(2)
-        Debug.Log(compiledCode);
+
+        List<string> instructions = getInstructions(compiledCode);
+
+        foreach (string s in instructions)
+        {
+            Debug.Log(s);
+        }
         // Hasta aqui todo TESTEADO Y CORRECTO
-        // Y me da palo seguir. Esto TODO
+        /*
+         * Ahora tenemos una List<string> con los comandos separados por saltos
+         * de lineas, y los whiles/repeats/if/else quedan asin:
+         * ------------------------------------------------------------------
+         * while(noBeepersPresent())
+         * {
+         * move()
+         * turnLeft()
+         * }
+         * if(gay())
+         * {
+         * move();
+         * exit();
+         * }
+         * else
+         * {
+         * turnRight();
+         * }
+         * --------------------------------------------------------------------
+         * Entonces hacemos una funcion recursiva que si encuentra un while/repeats/if/else
+         * haga lo mismo pero dentro de estos hasta que encuentre un '}', que serà lo
+         * que haga a continuación!
+         */
+
+        List<Action> planningActions = getPreActions(instructions);
+        // Aqui tenemos las acciones QUE SE DEBERIAN HACER SIN ERRORES,
+        // claro, respetando el maximo especificado en cada mapa (evitar bucles
+        // infinitos lololol)
+
+        // Después, hay que hacer otra lista con lo que REALMENTE se ejecuta, y se acaba hasta donde
+        // el codigo de error (el jugador se choca, no sale al final, no coje el beeper, etc.)
+
+        // Y pos ya esta este infierno hecho!
 
         // Final: Mirar si hay errores:
         checkForErrors();
+    }
+
+    private List<Action> getPreActions(List<string> instructions)
+    {
+        throw new NotImplementedException();
+    }
+
+    private List<string> getInstructions(string compiledCode)
+    {
+        compiledCode = compiledCode.Replace(';', '\n').Replace("{", "\n{\n").Replace("}", "\n}\n").Replace("\n\n", "\n");
+        int _leng = compiledCode.Length - 1;
+        compiledCode = compiledCode.Substring(0, _leng);
+        List<string> instructions = new List<string>(compiledCode.Split('\n'));
+        return instructions;
     }
 
     private bool checkForErrors()

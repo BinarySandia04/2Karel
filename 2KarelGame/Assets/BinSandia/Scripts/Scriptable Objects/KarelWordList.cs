@@ -11,6 +11,7 @@ public class KarelWordList : ScriptableObject
     {
         public string word;
         public Color color;
+        public bool hasCodeInside;
     }
     
     public List<Sentence> wordList;
