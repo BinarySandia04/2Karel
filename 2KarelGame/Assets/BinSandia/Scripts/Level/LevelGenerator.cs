@@ -63,6 +63,7 @@ public class LevelGenerator : MonoBehaviour
                         KarelPlayer kp = prefab.GetComponent<KarelPlayer>();
                         kp.levelGenerator = this;
                         kp.reservedWordList = cr.WordList;
+                        ins.GetComponent<KarelPlayer>().pos = prop;
                     }
                     generatedObjectsInLevel.Add(ins);
                 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.07206253, g: 0.07813783, b: 0.10005946, a: 1}
+  m_IndirectSpecularColor: {r: 19.898382, g: 7.0279717, b: 0.096524164, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1072,8 +1072,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -244.51, y: 0.0025001}
-  m_SizeDelta: {x: 61.14, y: 758.2}
+  m_AnchoredPosition: {x: -244.51, y: 0.00062847}
+  m_SizeDelta: {x: 61.1, y: 774.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1184139198
 MonoBehaviour:
@@ -2382,6 +2382,7 @@ MonoBehaviour:
     mapId: 0
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 0
+      instructionLimit: 0
   maps:
   - mapPng: {fileID: 2800000, guid: 46fb5f37066cb7547ba5a8c2fad6cd15, type: 3}
     mapSprite: {fileID: 21300000, guid: 46fb5f37066cb7547ba5a8c2fad6cd15, type: 3}
@@ -2390,6 +2391,7 @@ MonoBehaviour:
     mapId: 100001
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 6b46f2de6506e44439ee8f5aeecce248, type: 3}
     mapSprite: {fileID: 21300000, guid: 6b46f2de6506e44439ee8f5aeecce248, type: 3}
     name: Level 2
@@ -2397,6 +2399,7 @@ MonoBehaviour:
     mapId: 100002
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 8710703f61457e744a9a9bbaca9c50fa, type: 3}
     mapSprite: {fileID: 21300000, guid: 8710703f61457e744a9a9bbaca9c50fa, type: 3}
     name: Level 3
@@ -2404,6 +2407,7 @@ MonoBehaviour:
     mapId: 100003
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 34dde7f163f31e04190f88b56c8e7eb0, type: 3}
     mapSprite: {fileID: 21300000, guid: 34dde7f163f31e04190f88b56c8e7eb0, type: 3}
     name: Level 4
@@ -2411,6 +2415,7 @@ MonoBehaviour:
     mapId: 100004
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: c918f25b03d81ab4c85ef73f61942db6, type: 3}
     mapSprite: {fileID: 21300000, guid: c918f25b03d81ab4c85ef73f61942db6, type: 3}
     name: Level 5
@@ -2418,6 +2423,7 @@ MonoBehaviour:
     mapId: 100005
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 32c8ff97bd0ee3542b93228435e1a74c, type: 3}
     mapSprite: {fileID: 21300000, guid: 32c8ff97bd0ee3542b93228435e1a74c, type: 3}
     name: Level 6
@@ -2425,6 +2431,7 @@ MonoBehaviour:
     mapId: 100006
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 9b92216d84adfdc4491034aeb99b03cf, type: 3}
     mapSprite: {fileID: 21300000, guid: 9b92216d84adfdc4491034aeb99b03cf, type: 3}
     name: Level 7
@@ -2432,6 +2439,7 @@ MonoBehaviour:
     mapId: 100007
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 0
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 97c2981352fc42e48a21599c7aa4c897, type: 3}
     mapSprite: {fileID: 21300000, guid: 97c2981352fc42e48a21599c7aa4c897, type: 3}
     name: Level 8
@@ -2439,6 +2447,7 @@ MonoBehaviour:
     mapId: 100008
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 25e5bafba0a6b304d84b09310bc34b5b, type: 3}
     mapSprite: {fileID: 21300000, guid: 25e5bafba0a6b304d84b09310bc34b5b, type: 3}
     name: Level 9
@@ -2446,6 +2455,7 @@ MonoBehaviour:
     mapId: 100009
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 7619a5a612a15824da220c32c91c9d7b, type: 3}
     mapSprite: {fileID: 21300000, guid: 7619a5a612a15824da220c32c91c9d7b, type: 3}
     name: Level 10
@@ -2453,6 +2463,7 @@ MonoBehaviour:
     mapId: 100010
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 58a6b7643655f6149850a2ea91423cea, type: 3}
     mapSprite: {fileID: 21300000, guid: 58a6b7643655f6149850a2ea91423cea, type: 3}
     name: Level 11
@@ -2460,6 +2471,7 @@ MonoBehaviour:
     mapId: 100011
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: 2ef997d65ae9b644295ba3e1f09a97b8, type: 3}
     mapSprite: {fileID: 21300000, guid: 2ef997d65ae9b644295ba3e1f09a97b8, type: 3}
     name: Level 12
@@ -2467,6 +2479,7 @@ MonoBehaviour:
     mapId: 100012
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: d12dd8161e8788b4b8d76645e1e10dc6, type: 3}
     mapSprite: {fileID: 21300000, guid: d12dd8161e8788b4b8d76645e1e10dc6, type: 3}
     name: Level 13
@@ -2474,6 +2487,7 @@ MonoBehaviour:
     mapId: 100013
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   - mapPng: {fileID: 2800000, guid: a6f601b4cd3c63c4a9420cac244d2c42, type: 3}
     mapSprite: {fileID: 21300000, guid: a6f601b4cd3c63c4a9420cac244d2c42, type: 3}
     name: Level 14
@@ -2481,6 +2495,7 @@ MonoBehaviour:
     mapId: 100014
     mapCompilingPropieties:
       recursiveFunctionCheckLimit: 5
+      instructionLimit: 0
   InGameMenu: {fileID: 7934657377392414826}
   InGameMenuPrefab: {fileID: 0}
   MainMenu: {fileID: 1929740851}
@@ -2523,6 +2538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f807620c74d4a647a7f1c6480954456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textArea: {fileID: 4029157794752016191}
 --- !u!1 &1639301545778388409
 GameObject:
   m_ObjectHideFlags: 0

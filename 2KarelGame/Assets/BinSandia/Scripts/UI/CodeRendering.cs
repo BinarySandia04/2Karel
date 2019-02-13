@@ -335,7 +335,7 @@ public class CodeRendering : MonoBehaviour
     {
         int lines = getLines() + 1;
         string text = "";
-        for(int i = 0; i < lines; i++)
+        for(int i = 1; i < lines + 1; i++)
         {
             text += (i + "\n");
         }

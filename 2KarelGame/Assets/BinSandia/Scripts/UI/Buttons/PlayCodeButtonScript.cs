@@ -6,8 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class PlayCodeButtonScript : MonoBehaviour
 {
+    public GameObject textArea;
+
     public void renderCode()
     {
+        if(textArea != null)
+        {
+            RectTransform rect = textArea.transform.Find("Code Editor Input Caret").GetComponent<RectTransform>();
+            rect.offsetMin = new Vector2(56.55f, 0);
+            rect.offsetMax = new Vector2(0, 0);
+        }
         GameObject player = null;
         string code = "";
         foreach(GameObject g in SceneManager.GetActiveScene().GetRootGameObjects())

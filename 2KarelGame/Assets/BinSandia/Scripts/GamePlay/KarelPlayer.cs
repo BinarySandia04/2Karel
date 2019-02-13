@@ -55,7 +55,7 @@ public class KarelPlayer : MonoBehaviour
     public bool running;
     [Header("Position")]
     [SerializeField]
-    public Position pos;
+    public Position pos = new Position();
 
     public enum Orientation
     {
@@ -70,6 +70,13 @@ public class KarelPlayer : MonoBehaviour
     public struct CompilingPropieties
     {
         public int recursiveFunctionCheckLimit;
+        public int instructionLimit;
+
+        public CompilingPropieties(int functionCheckLimit, int instructLimit)
+        {
+            recursiveFunctionCheckLimit = functionCheckLimit;
+            instructionLimit = instructLimit;
+        }
     }
 
     public struct Function
@@ -81,18 +88,15 @@ public class KarelPlayer : MonoBehaviour
 
     public struct Action
     {
-        int xPos;
-        int yPos;
-        Orientation currentOrientation;
-        bool hasMoved;
-        bool hasRotated;
-        bool hasPickedBeeper;
-        bool hasLeftBeeper;
-        bool exited;
+        public int xPos;
+        public int yPos;
+        public Orientation currentOrientation;
+        public bool hasPickedBeeper;
+        public bool exited;
     }
 
     [Space]
-    public Orientation or = Orientation.North;
+    public Orientation or = Orientation.West;
 
     // 0.8 ms en [i5-6400 | GTX 950 | 8GB Ram | Unity Editor]
     public void translateCode()
@@ -198,8 +202,8 @@ public class KarelPlayer : MonoBehaviour
 
         if(CurrentCompilingPropieties.Equals(default(CompilingPropieties)))
         {
-            Debug.LogWarning("No se han definido las opciones de compilacion");
-            return;
+            Debug.LogWarning("No se han definido las opciones de compilacion, ponienfo unas default...");
+            CurrentCompilingPropieties = new CompilingPropieties(10, 500);
         }
 
         // Paso 1 - quitar espacios i saltos de linea
@@ -251,10 +255,10 @@ public class KarelPlayer : MonoBehaviour
 
         List<string> instructions = getInstructions(compiledCode);
 
-        foreach (string s in instructions)
+        /*foreach (string s in instructions)
         {
             Debug.Log(s);
-        }
+        }*/
         // Hasta aqui todo TESTEADO Y CORRECTO
         /*
          * Ahora tenemos una List<string> con los comandos separados por saltos
@@ -279,8 +283,13 @@ public class KarelPlayer : MonoBehaviour
          * haga lo mismo pero dentro de estos hasta que encuentre un '}', que serà lo
          * que haga a continuación!
          */
-
+        Action initialAction = GetKarelState();
         List<Action> planningActions = getPreActions(instructions);
+        foreach (Action act in planningActions)
+        {
+            Debug.Log(act.xPos + " " + act.yPos);
+        }
+        SetKarelState(initialAction);
         // Aqui tenemos las acciones QUE SE DEBERIAN HACER SIN ERRORES,
         // claro, respetando el maximo especificado en cada mapa (evitar bucles
         // infinitos lololol)
@@ -294,9 +303,75 @@ public class KarelPlayer : MonoBehaviour
         checkForErrors();
     }
 
+    private void SetKarelState(Action action)
+    {
+        or = action.currentOrientation;
+        pos.xCoord = action.xPos;
+        pos.yCoord = action.yPos;
+    }
+
+    int _actionIndex = 0;
+    int _currentActions = 0;
+    int _instructionLimit = 0;
     private List<Action> getPreActions(List<string> instructions)
     {
-        throw new NotImplementedException();
+        _instructionLimit = CurrentCompilingPropieties.instructionLimit;
+        List<Action> planningActions = new List<Action>();
+        _actionIndex = 0;
+        refreshPlayer();
+        while(_actionIndex < instructions.Count){
+            // Checkea si ya ha salido
+            planningActions = calculateNextOperationRecursive(instructions, planningActions);
+            if (planningActions[planningActions.Count - 1].exited) break;
+        }
+        return planningActions;
+    }
+
+    private List<Action> calculateNextOperationRecursive(List<string> instructions, List<Action> planningActions)
+    {
+        // Checkea si ya ha salido
+        _currentActions++;
+        string currentInstruction = instructions[_actionIndex];
+        if(currentInstruction == "move()")
+        {
+            KarelMove();
+            planningActions.Add(GetKarelState());
+            _actionIndex++;
+            return planningActions;
+        } else if(currentInstruction == "turnLeft()")
+        {
+            KarelTurnLeft();
+            planningActions.Add(GetKarelState());
+            _actionIndex++;
+            return planningActions;
+        } else if (currentInstruction == "turnRight()")
+        {
+            KarelTurnRight();
+            planningActions.Add(GetKarelState());
+            _actionIndex++;
+            return planningActions;
+        } else if(currentInstruction == "exit()")
+        {
+            Action exited = GetKarelState();
+            exited.exited = true;
+            _actionIndex++;
+        }
+        else
+        {
+            _actionIndex++;
+        }
+        return planningActions;
+    }
+
+    private Action GetKarelState()
+    {
+        Action state = new Action();
+        state.currentOrientation = or;
+        state.exited = false;
+        state.xPos = pos.xCoord;
+        state.yPos = pos.yCoord;
+        state.hasPickedBeeper = false; // TODO
+        return state;
     }
 
     private List<string> getInstructions(string compiledCode)
@@ -321,7 +396,7 @@ public class KarelPlayer : MonoBehaviour
     }
 
     // ALERTA: Funcion bastante larga y aburrida
-    void checkBools()
+    void refreshPlayer()
     {
         int playerX = pos.xCoord;
         int playerY = pos.yCoord;
@@ -335,143 +410,245 @@ public class KarelPlayer : MonoBehaviour
 
         if(or == Orientation.North)
         {
-            if(gnorth.name == "Wall")
+            if (gnorth != null)
             {
-                // FRONT
+                if (gnorth.name == "Wall")
+                {
+                    // FRONT
+                    frontIsBlocked = true;
+                    frontIsClear = false;
+                }
+
+                else
+                {
+                    frontIsBlocked = false;
+                    frontIsClear = true;
+                }
+            } else
+            {
                 frontIsBlocked = true;
                 frontIsClear = false;
+            }
+
+            if (geast != null)
+            {
+                if (geast.name == "Wall")
+                {
+                    // RIGHT
+                    rightIsBlocked = true;
+                    rightIsClear = false;
+                }
+                else
+                {
+                    rightIsBlocked = false;
+                    rightIsClear = true;
+                }
             } else
             {
-                frontIsBlocked = false;
-                frontIsClear = true;
-            }
-            if(geast.name == "Wall")
-            {
-                // RIGHT
                 rightIsBlocked = true;
                 rightIsClear = false;
+            }
+
+            if (gwest != null)
+            {
+                if (gwest.name == "Wall")
+                {
+                    // LEFT
+                    leftIsBlocked = true;
+                    leftIsClear = false;
+                }
+                else
+                {
+                    leftIsBlocked = false;
+                    leftIsClear = true;
+                }
             } else
             {
-                rightIsBlocked = false;
-                rightIsClear = true;
-            }
-            if(gwest.name == "Wall")
-            {
-                // LEFT
                 leftIsBlocked = true;
                 leftIsClear = false;
-            } else
-            {
-                leftIsBlocked = false;
-                leftIsClear = true;
             }
         }
         else if (or == Orientation.South)
         {
-            if (gsouth.name == "Wall")
+            if (gsouth != null)
             {
-                // FRONT
+                if (gsouth.name == "Wall")
+                {
+                    // FRONT
+                    frontIsBlocked = true;
+                    frontIsClear = false;
+                }
+                else
+                {
+                    frontIsBlocked = false;
+                    frontIsClear = true;
+                }
+            } else
+            {
                 frontIsBlocked = true;
                 frontIsClear = false;
             }
-            else
+
+            if (geast != null)
             {
-                frontIsBlocked = false;
-                frontIsClear = true;
-            }
-            if (geast.name == "Wall")
+                if (geast.name == "Wall")
+                {
+                    // RIGHT
+                    rightIsBlocked = true;
+                    rightIsClear = false;
+                }
+                else
+                {
+                    rightIsBlocked = false;
+                    rightIsClear = true;
+                }
+            } else
             {
-                // RIGHT
                 rightIsBlocked = true;
                 rightIsClear = false;
             }
-            else
+
+            if (gwest != null)
             {
-                rightIsBlocked = false;
-                rightIsClear = true;
-            }
-            if (gwest.name == "Wall")
+                if (gwest.name == "Wall")
+                {
+                    // LEFT
+                    leftIsBlocked = true;
+                    leftIsClear = false;
+                }
+                else
+                {
+                    leftIsBlocked = false;
+                    leftIsClear = true;
+                }
+            } else
             {
-                // LEFT
                 leftIsBlocked = true;
                 leftIsClear = false;
             }
-            else
-            {
-                leftIsBlocked = false;
-                leftIsClear = true;
-            }
+
         } else if (or == Orientation.West)
         {
-            if (gwest.name == "Wall")
+            if (gwest != null)
             {
-                // FRONT
+                if (gwest.name == "Wall")
+                {
+                    // FRONT
+                    frontIsBlocked = true;
+                    frontIsClear = false;
+                }
+                else
+                {
+                    frontIsBlocked = false;
+                    frontIsClear = true;
+                }
+            } else
+            {
                 frontIsBlocked = true;
                 frontIsClear = false;
             }
-            else
+
+            if (gsouth != null)
             {
-                frontIsBlocked = false;
-                frontIsClear = true;
-            }
-            if (gsouth.name == "Wall")
+                if (gsouth.name == "Wall")
+                {
+                    // RIGHT
+                    rightIsBlocked = true;
+                    rightIsClear = false;
+                }
+                else
+                {
+                    rightIsBlocked = false;
+                    rightIsClear = true;
+                }
+            } else
             {
-                // RIGHT
                 rightIsBlocked = true;
                 rightIsClear = false;
             }
+
+            if (gnorth != null)
+            {
+                if (gnorth.name == "Wall")
+                {
+                    // LEFT
+                    leftIsBlocked = true;
+                    leftIsClear = false;
+                }
+                else
+                {
+                    leftIsBlocked = false;
+                    leftIsClear = true;
+                }
+            }
             else
             {
-                rightIsBlocked = false;
-                rightIsClear = true;
-            }
-            if (gnorth.name == "Wall")
-            {
-                // LEFT
                 leftIsBlocked = true;
                 leftIsClear = false;
-            }
-            else
-            {
-                leftIsBlocked = false;
-                leftIsClear = true;
             }
         }
         else if (or == Orientation.East)
         {
-            if (geast.name == "Wall")
+            if (geast != null)
             {
-                // FRONT
+                if (geast.name == "Wall")
+                {
+                    // FRONT
+                    frontIsBlocked = true;
+                    frontIsClear = false;
+                }
+                else
+                {
+                    frontIsBlocked = false;
+                    frontIsClear = true;
+                }
+            } else
+            {
                 frontIsBlocked = true;
                 frontIsClear = false;
             }
+
+
+            if (gnorth != null)
+            {
+                if (gnorth.name == "Wall")
+                {
+                    // RIGHT
+                    rightIsBlocked = true;
+                    rightIsClear = false;
+                }
+                else
+                {
+                    rightIsBlocked = false;
+                    rightIsClear = true;
+                }
+            }
             else
             {
-                frontIsBlocked = false;
-                frontIsClear = true;
-            }
-            if (gnorth.name == "Wall")
-            {
-                // RIGHT
                 rightIsBlocked = true;
                 rightIsClear = false;
             }
+
+            if (gsouth != null)
+            {
+                if (gsouth.name == "Wall")
+                {
+                    // LEFT
+                    leftIsBlocked = true;
+                    leftIsClear = false;
+                }
+                else
+                {
+                    leftIsBlocked = false;
+                    leftIsClear = true;
+                }
+            }
             else
             {
-                rightIsBlocked = false;
-                rightIsClear = true;
-            }
-            if (gsouth.name == "Wall")
-            {
-                // LEFT
                 leftIsBlocked = true;
                 leftIsClear = false;
             }
-            else
-            {
-                leftIsBlocked = false;
-                leftIsClear = true;
-            }
+
         }
         else
         {
@@ -518,6 +695,7 @@ public class KarelPlayer : MonoBehaviour
     }
     public bool imNotInAWallLol()
     {
+        if (LevelGenerator.getObjectCoord(pos.xCoord, pos.yCoord) == null) return false;
         if (LevelGenerator.getObjectCoord(pos.xCoord, pos.yCoord).name != "Wall") return true;
         else return false;
     }
