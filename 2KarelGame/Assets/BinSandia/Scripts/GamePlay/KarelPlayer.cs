@@ -8,7 +8,6 @@ using UnityEngine;
 public class KarelPlayer : MonoBehaviour
 {
     public KarelWordList reservedWordList;
-    [HideInInspector]
     public LevelGenerator levelGenerator;
     [HideInInspector]
     public static CompilingPropieties CurrentCompilingPropieties;
@@ -33,6 +32,7 @@ public class KarelPlayer : MonoBehaviour
     public bool noBeepersPresent;
     public bool beepersInBag;
     public bool noBeepersInBag;
+    public int currentBeepers;
     [Header("Front, right, left")]
     public bool frontIsClear;
     public bool frontIsBlocked;
@@ -90,13 +90,15 @@ public class KarelPlayer : MonoBehaviour
     {
         public int xPos;
         public int yPos;
+        public int currentBeepers;
         public Orientation currentOrientation;
         public bool hasPickedBeeper;
         public bool exited;
+        public bool failed;
     }
 
     [Space]
-    public Orientation or = Orientation.West;
+    public Orientation or = Orientation.East;
 
     // 0.8 ms en [i5-6400 | GTX 950 | 8GB Ram | Unity Editor]
     public void translateCode()
@@ -283,11 +285,17 @@ public class KarelPlayer : MonoBehaviour
          * haga lo mismo pero dentro de estos hasta que encuentre un '}', que serà lo
          * que haga a continuación!
          */
-        Action initialAction = GetKarelState();
+        Action initialAction = NewKarelState();
         List<Action> planningActions = getPreActions(instructions);
+        int _Dactionumber = 0;
         foreach (Action act in planningActions)
         {
+            Debug.Log("---- ACTION: " + _Dactionumber + " ------");
             Debug.Log(act.xPos + " " + act.yPos);
+            Debug.Log("B: " + act.currentBeepers);
+            Debug.Log("F: " + act.failed);
+            Debug.Log("Orientation: " + act.currentOrientation);
+            _Dactionumber++;
         }
         SetKarelState(initialAction);
         // Aqui tenemos las acciones QUE SE DEBERIAN HACER SIN ERRORES,
@@ -301,6 +309,19 @@ public class KarelPlayer : MonoBehaviour
 
         // Final: Mirar si hay errores:
         checkForErrors();
+    }
+
+    private Action NewKarelState()
+    {
+        Action neu = new Action();
+        neu.xPos = pos.xCoord;
+        neu.yPos = pos.yCoord;
+        neu.currentBeepers = 0;
+        neu.currentOrientation = Orientation.East;
+        neu.exited = false;
+        neu.failed = false;
+        neu.hasPickedBeeper = false;
+        return neu;
     }
 
     private void SetKarelState(Action action)
@@ -321,46 +342,96 @@ public class KarelPlayer : MonoBehaviour
         refreshPlayer();
         while(_actionIndex < instructions.Count){
             // Checkea si ya ha salido
-            planningActions = calculateNextOperationRecursive(instructions, planningActions);
-            if (planningActions[planningActions.Count - 1].exited) break;
+            if (instructions[_actionIndex] != "{" && instructions[_actionIndex] != "}") planningActions = calculateNextOperationRecursive(instructions, planningActions, true, true, 0);
+            else _actionIndex++;
+            if(planningActions.Count > 0) if (planningActions[planningActions.Count - 1].exited) break;
         }
         return planningActions;
     }
 
-    private List<Action> calculateNextOperationRecursive(List<string> instructions, List<Action> planningActions)
+    private List<Action> calculateNextOperationRecursive(List<string> instructions, List<Action> planningActions, bool addActionIndex, bool useActionIndex, int alternativeActionIndex)
     {
         // Checkea si ya ha salido
         _currentActions++;
-        string currentInstruction = instructions[_actionIndex];
+        string currentInstruction;
+        if (useActionIndex)
+        {
+            currentInstruction = instructions[_actionIndex];
+        } else
+        {
+            currentInstruction = instructions[alternativeActionIndex];
+        }
+        Action state = GetKarelState();
         if(currentInstruction == "move()")
         {
+            SetKarelState(state);
             KarelMove();
-            planningActions.Add(GetKarelState());
-            _actionIndex++;
-            return planningActions;
+            state = GetKarelState();
+            planningActions.Add(state);
         } else if(currentInstruction == "turnLeft()")
         {
             KarelTurnLeft();
-            planningActions.Add(GetKarelState());
-            _actionIndex++;
-            return planningActions;
+            planningActions.Add(state);
         } else if (currentInstruction == "turnRight()")
         {
             KarelTurnRight();
-            planningActions.Add(GetKarelState());
-            _actionIndex++;
-            return planningActions;
+            planningActions.Add(state);
         } else if(currentInstruction == "exit()")
         {
-            Action exited = GetKarelState();
-            exited.exited = true;
-            _actionIndex++;
-        }
-        else
+            state.exited = true;
+        } else if(currentInstruction == "pickBeeper()")
         {
-            _actionIndex++;
+            
+            bool success = KarelPickBeeper(state);
+            if (!success)
+            {
+                state.failed = true;
+            } else
+            {
+                state.currentBeepers = currentBeepers + 1;
+            }
+            planningActions.Add(state);
+        } else if (currentInstruction.StartsWith("repeat"))
+        {
+            int repeatNumber = int.Parse(Regex.Match(currentInstruction, @"\d+").Value);
+            //TODO
+        } else if (currentInstruction.StartsWith("if"))
+        {
+            //TODO
         }
+        else if (currentInstruction.StartsWith("while"))
+        {
+            //TODO
+        }
+        else if (currentInstruction.StartsWith("else"))
+        {
+            //TODO
+        }
+        if (addActionIndex && useActionIndex) _actionIndex++;
         return planningActions;
+    }
+
+    private bool KarelPickBeeper(Action posi)
+    {
+        GameObject standingIn = LevelGenerator.getObjectCoord(posi.xPos, posi.yPos); // Conseguimos el objecto en el que estamos AHORA
+        Debug.Log("Hola?");
+        if(standingIn != null)
+        {
+            Debug.Log(standingIn.name);
+            if (standingIn.name == "Beeper")
+            {
+                GameObject beeper;
+                beeper = standingIn.transform.Find("Beeper2").gameObject;
+                if(beeper != null)
+                {
+                    // DestruyeBeepersYTal
+                    beeper.SetActive(false);
+                    currentBeepers++;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private Action GetKarelState()
@@ -371,6 +442,8 @@ public class KarelPlayer : MonoBehaviour
         state.xPos = pos.xCoord;
         state.yPos = pos.yCoord;
         state.hasPickedBeeper = false; // TODO
+        state.currentBeepers = currentBeepers;
+        state.failed = false;
         return state;
     }
 

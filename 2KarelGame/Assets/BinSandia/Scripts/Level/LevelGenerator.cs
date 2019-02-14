@@ -50,9 +50,10 @@ public class LevelGenerator : MonoBehaviour
                 foreach(GameObject prefab in mapin.prefabs)
                 {
                     GameObject ins = Instantiate(prefab, position, Quaternion.identity, transform);
-                    Position prop = ins.GetComponent<ObjectPropieties>().pos;
-                    prop.xCoord = x;
-                    prop.yCoord = y;
+                    ins.gameObject.name = prefab.name;
+                    ObjectPropieties prop = ins.GetComponent<ObjectPropieties>();
+                    prop.pos.xCoord = x;
+                    prop.pos.yCoord = y;
                     if (prefab.name == "Player")
                     {
                         CodeRendering cr = codeEditor.GetComponent<CodeRendering>();
@@ -63,7 +64,7 @@ public class LevelGenerator : MonoBehaviour
                         KarelPlayer kp = prefab.GetComponent<KarelPlayer>();
                         kp.levelGenerator = this;
                         kp.reservedWordList = cr.WordList;
-                        ins.GetComponent<KarelPlayer>().pos = prop;
+                        ins.GetComponent<KarelPlayer>().pos = prop.pos;
                     }
                     generatedObjectsInLevel.Add(ins);
                 }
@@ -76,7 +77,7 @@ public class LevelGenerator : MonoBehaviour
         // Falta optimización
         foreach(GameObject g in generatedObjectsInLevel)
         {
-            if(g.GetComponent<ObjectPropieties>().pos.xCoord == x && g.GetComponent<ObjectPropieties>().pos.yCoord == y)
+            if(g.GetComponent<ObjectPropieties>().pos.xCoord == x && g.GetComponent<ObjectPropieties>().pos.yCoord == y && g.name != "Player")
             {
                 return g;
             }

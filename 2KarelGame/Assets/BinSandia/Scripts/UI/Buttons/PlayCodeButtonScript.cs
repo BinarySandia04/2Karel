@@ -21,7 +21,7 @@ public class PlayCodeButtonScript : MonoBehaviour
         foreach(GameObject g in SceneManager.GetActiveScene().GetRootGameObjects())
         {
             if(g.name == "Managers"){
-                player = g.transform.Find("Level Manager").Find("Player(Clone)").gameObject;
+                player = g.transform.Find("Level Manager").Find("Player").gameObject;
             }
 
             if(g.name == "Ui - Canvas")

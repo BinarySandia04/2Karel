@@ -1,4 +1,5 @@
-﻿public class Position
+﻿[System.Serializable]
+public class Position
 {
     public int xCoord;
     public int yCoord;
